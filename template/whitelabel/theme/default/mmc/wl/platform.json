@@ -1,0 +1,23 @@
+{
+    "offlinePinEnabled":true,
+    "changePasswordDescription":"",
+    "changePasswordLinkLabel":"Change Password",
+    "changePasswordURL":"",
+    "forgotPasswordDescription":"",
+    "forgotPasswordLinkLabel":"I forgot my Password",
+    "forgotPasswordURL":"",
+    "validateUsername":false,
+    "profileNameDescription":"",
+    "profileNamePlaceholderText":"Profile Name",
+    "profileUsernameDescription":"",
+    "profileUserNamePlaceholderText":"User Name",
+    "profileImageDesciption":"",
+    "profileImagePlaceholderText":"Profile Image",
+    "profileServerDescription":"",
+    "platformBranding":"Powered by Emotive",
+    "notifyUpdateVersionA":"2.5.4",
+    "notifyUpdateVersionI":"1.0.78",
+    "firstProfileUsernameDescription":"To quickly get started, enter your User Name",
+    "firstProfileImageDescription":"Then upload or take a photo for your Profile Image (optional)"
+}
+

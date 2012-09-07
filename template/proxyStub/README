@@ -1,0 +1,1 @@
+Generates model based on --model option and a proxy that returns objects with default field values

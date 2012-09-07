@@ -1,0 +1,15 @@
+{
+    "author": "Emotive generated proxy",
+    "name": "/*insert: subject.name */",
+    "description": "/*insert: subject.name */ package",
+    "version": "0.0.1",
+    "homepage": "http://www.emotive.com",
+    "dependencies": {
+      "genericproxy" : "http://download.emotive.com/toolkit/tip/genericproxy.tgz"
+    },
+    "devDependencies": {},
+    "optionalDependencies": {},
+    "engines": {
+      "node": ">=0.8.0"
+    }
+}

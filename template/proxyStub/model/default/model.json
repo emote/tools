@@ -1,0 +1,44 @@
+[
+{
+	op: 'INVOKE',
+	targetType: 'CdmExternalSystem', 
+	name: 'createExternalSystem',
+	params: {
+		name: "/*insert: subject.name */"
+	}
+},
+/*block:A loop types*/
+{
+	op: 'INVOKE',
+	targetType: 'CdmType',
+	name: 'replaceCdmType',
+	params: {
+		typeName: "/*insert: index */", 
+    	storage: 'document',
+    	extensionAllowed: true, 
+        externallySourced: true,
+		propertySet: [
+/*block:B properties*/
+			{name : "/*insert: index */", type : "/*insert: subject */"}/*insert: (!isLast ? ',' : '')*/
+/*block:B end*/
+		],
+	},
+},
+{
+	op: 'INVOKE',
+	targetType: 'CdmType',
+	name: 'bindCdmType',
+	params: {
+		typeName: "/*insert: index */", 
+		externalType: "/*insert: index */",
+		externalSystem: "/*insert: parent.name */", 
+		readStrategy: 'sync',
+		cacheMode: 'global', 
+		sourceStrategy: 'sync', 
+		uniqueExternalId: true,
+		externalIdProperty: 'id',
+		bindingStrategy: "matchPropertyNames" 
+	},
+},
+/*block:A end*/
+]
