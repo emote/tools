@@ -4,10 +4,9 @@ The purpose of the emote tool is to create projects that contain Emotive applica
 
 ## Installing emote
 
-emote is implemented in node.js, which must be installed prior to installing emote. ing
-Use npm (the package manager for node.js) to install emote. See http://nodejs.org/download/ for installion instructions.
+emote is implemented in node.js, which must be installed prior to installing emote. See http://nodejs.org/download/ for installion instructions. emote requires node.js v0.8.0 or higher.
 
-emote is the installed using npm, the node package manager. We recommend installing with the '-g' option so emote will be available from the command line. Here are some examples:
+emote is then installed using npm, the node package manager. Install with the '-g' option so emote will be available from the command line. Here are some examples.
 
 ### Installing from github
 
@@ -18,6 +17,10 @@ $ npm install -g https://github.com/emote/tools/tarball/v1.0.9
 Or just install the latest:
 
 $ npm install -g https://github.com/emote/tools/tarball/master
+
+Note that you may have to use "sudo" to install with '-g':
+
+$ sudo npm install -g https://github.com/emote/tools/tarball/master
 
 ### Installing from a local tar file:
 
