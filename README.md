@@ -4,7 +4,7 @@ The purpose of the emote tool is to create projects that contain Emotive applica
 
 ## Installing emote
 
-emote is implemented in node.js, which must be installed prior to installing emote. See http://nodejs.org/download/ for installion instructions. emote requires node.js v0.8.0 or higher.
+emote is implemented in node.js, which must be installed prior to installing emote. See http://nodejs.org/download/ for installation instructions. emote requires node.js v0.8.0 or higher.
 
 emote is then installed using npm, the node package manager. Install with the '-g' option so emote will be available from the command line. Here are some examples.
 
