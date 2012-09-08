@@ -1,6 +1,6 @@
 # Overview
 
-The purpose of the emote tool is to create projects that contain Emotive applications and deploy them to the Emotive cloud service. An emote project are files that reside on your local files system. The Emotive cloud service does not keep track of your project. When you deploy a project, the contents the the project, such as apps and integration proxies, are uploaded to the Emotive cloud service.
+The purpose of the emote tool is to create projects that contain Emotive applications and deploy them to the Emotive cloud service. The emote project consists of the files that reside on your local file system. The Emotive cloud service does not keep track of your project. When you deploy a project, the contents the the project, such as apps and integration proxies, are uploaded to the Emotive cloud service.
 
 ## Installing emote
 
@@ -9,9 +9,15 @@ Use npm (the package manager for node.js) to install emote. See http://nodejs.or
 
 emote is the installed using npm, the node package manager. We recommend installing with the '-g' option so emote will be available from the command line. Here are some examples:
 
-### Installing from emotive.com
+### Installing from github
 
-$ npm install -g http://download.emotive.com/toolkit/tip/emote.tgz
+You can install a tagged version:
+
+$ npm install -g https://github.com/emote/tools/tarball/v1.0.9
+
+Or just install the latest:
+
+$ npm install -g https://github.com/emote/tools/tarball/master
 
 ### Installing from a local tar file:
 
@@ -19,7 +25,7 @@ $ npm install -g emote.tgz
 
 ## Projects
 
-To illustrate a project, here is an example of creating a project. The commands used are described in more detail later in this docs.
+To illustrate a project, here is an example of creating a project. The commands used are described in more detail below.
 
 $ emote create myproj
 ...
