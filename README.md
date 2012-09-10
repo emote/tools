@@ -298,9 +298,9 @@ creds.json contains your Saleforce credentials:
 
 {
   "host":"login.salesforce.com",
-  "username":"mark@emotive.com",
+  "username":"me@mydomain.com",
   "password":"Pa$$w0rd",
-  "token":"6dmaI81nY1alnekJSFYy0vQR"
+  "token":"6dmaI8_salesforce_API_token_Yy0vQR"
 }
 
 In your Salesforce account, you will need to enable API access for your username, and obtain an API token.
