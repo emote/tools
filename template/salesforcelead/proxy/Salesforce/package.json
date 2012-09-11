@@ -2,10 +2,11 @@
     "author": "enter author here",
     "name": "Salesforce",
     "description": "Example proxy code for accessing Salesforce data",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "homepage": "http://www.emotive.com",
     "dependencies": {
-        "sfproxy" : "http://download.emotive.com/toolkit/tip/sfproxy.tgz"
+        "emsfdc" : "https://github.com/emote/emsfdc/tarball/v1.0.4",
+        "emproxy" : "https://github.com/emote/emproxy/tarball/v1.0.4"
     },
     "devDependencies": {},
     "optionalDependencies": {},
