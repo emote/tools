@@ -6,6 +6,12 @@ The purpose of the emote tool is to create projects that contain Emotive applica
 
 emote is implemented in node.js, which must be installed prior to installing emote. See http://nodejs.org/download/ for installation instructions. emote requires node.js v0.8.0 or higher.
 
+IMPORTANT: before proceding to install emote, run thus simple test to verify your node.js and node package manager install:
+
+$ npm install request
+
+This succeeds installing the "request" package, and it insures that npm is configured correctly. Don't skip this step unless you are already using node of your development system.
+
 emote is then installed using npm, the node package manager. Install with the '-g' option so emote will be available from the command line. Here are some examples.
 
 ### Installing from github
@@ -161,6 +167,30 @@ emote deploy proxy usgs
 Will deploy the "usgs" proxy that was generated into your project.
 
 Note the until a project has been deployed, the MMS cloud service (at mms.emotive.com) has no knowledge of the project. By deploying the generated project, the app is made available to users.
+
+## add
+
+The add command is like the create command, but it just pulls the specified part of a given template and adds it to you project.
+
+Example:
+
+emote add theme default --template branding
+
+This take the default "theme" from the "branding" template and adds it to your project.
+
+## log
+
+emote log <begin time> 
+
+This tails the log file for your proxy running on the MMS server. The begin time says the earliest time of message to show. It can be an absolute time, e.g. 
+
+emote log 2012-09-13T14:34:28Z
+
+or relative time in minutes:
+
+emote log 5m
+
+The relative time starts the specified number of minute before the present. For example, if you are testing something and it fails, you can show the most recent 5 minutes from the log this way.
 
 ## cleanAll
 
