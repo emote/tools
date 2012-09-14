@@ -40,10 +40,10 @@ $ emote create myproj
 ...
 $ cd myproj
 $ ls
-model   project.json  proxy   app
+project.json    app
 $ 
 
-emote creates a project directory than contain subdirectories for model, proxy, and app code. 
+emote creates a project directory than contain a project.json file and a subdirectory for app code. 
 
 Project specific settings are stored in project.json. This file is also used to identify the root of a project. If you are in a project subdirectory, and issue an emote command, if fins the root of the project by goping up the directory structure until project.json is found. 
 
@@ -54,7 +54,11 @@ When creating a project, you can provide the name of a template that creates a p
 $ emote create myproj --template usgs
 ...
 $ cd myproj
+$ ls
+README    app   model   project.json  proxy   test
 $ emote deploy
+
+Note that in this case, emote creates sudirectories for app, proxy, model, and test code. These directories are generated from the usgs template. The deploy command deploys artifacts from all these subdirectories
 
 ## Development lifecycle example
 
