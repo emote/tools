@@ -196,6 +196,30 @@ Where myfile.json contains:
 
 Will select a list of the External Systems for you tenant which are registered with MMS and print it to stdout.
 
+## getWsdl
+
+emote getWsdl subproject wsdlUrl service port [username password]
+
+Specify service and port by their simple (unqualified) names. username and password are the credentials (if any)
+needed to read the WSDL.  subproject is the name of the subproject you wish to create.
+
+This is the first step in creating a SOAP-service-based subproject.  It will fetch the WSDL for a web service and create two
+files in your project's <subproject>/model directory:
+
+* wsdl.json contains a JSON version of the web service's definitions.
+* wsdlOps.json contains a list of the web service's operations.
+
+wsdlOps.json determined which web service operations will be part of the generated subproject.  Originally, all of the
+operations are disabled (set to false.) Before generating, edit this file to set the desired operations to "true".
+Next, use the generateFromWsdl command to generate your subproject.
+
+## generateFromWsdl
+
+emote generateFromWsdl subproject
+
+This will generate a SOAP-service-based subproject.  Before running this, you must use the getWsdl command to load WSDL-based
+definitions into your subproject.
+
 # Running standalone tests for a proxy
 
 A project template may generate tests. These will be a in test directory under your project. If you modify proxy code, it is helpful to run a standalone test of the proxy to make sure it works before deploying it. This is all done with node.js from the command line, and you should feel free to read and modify the code for both the proxy and the test.
