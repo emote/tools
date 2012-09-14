@@ -6,7 +6,7 @@
     "homepage": "http://www.emotive.com",
     "dependencies": {
       "request":"2.9.x",
-      "genericproxy" : "http://download.emotive.com/toolkit/tip/genericproxy.tgz"
+      "emproxy" : "https://github.com/emote/emproxy/tarball/v1.0.4"
     },
     "devDependencies": {},
     "optionalDependencies": {},

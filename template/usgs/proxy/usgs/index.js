@@ -1,14 +1,14 @@
 "use strict";
 var util = require('util');
 var request = require('request');
-var genericproxy = require('genericproxy');
+var emproxy = require('emproxy');
 
 var hour = 60 * 60 * 1000; // ms in an hour
 var day = 24 * hour;
 var week = 7 * day;
 
-genericproxy.init(function afterInitCallback(initialConfig) {
-    genericproxy.start(processDirective);
+emproxy.init(function afterInitCallback(initialConfig) {
+    emproxy.start(processDirective);
 });
 
 // http://earthquake.usgs.gov/earthquakes/feed/geojson/1.0/hour
