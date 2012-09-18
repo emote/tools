@@ -111,9 +111,9 @@ A username and password (and optionally a server URL) can be supplied on the com
   --username, -u  Emotive username                               
   --server, -s    Emotive server URL [default: "http://mms.emotive.com"]
 
-## Precendence
+## Precedence
 
-Starting with the lowest precendence, each source of credential decribed above overrides the ones before it. So the precedence is:
+Starting with the lowest precedence, each source of credential described above overrides the ones before it. So the precedence is:
 
 1. Username and password as command line parameters
 2. Profile file on command line
@@ -184,17 +184,38 @@ This take the default "theme" from the "branding" template and adds it to your p
 
 ## log
 
-emote log <begin time> 
+emote log <start time> <end time> [--tail] [--local] [--csv]
 
-This tails the log file for your proxy running on the MMS server. The begin time says the earliest time of message to show. It can be an absolute time, e.g. 
+This displays the log file for your proxy running on the MMS server. The <start time> indicates the stamp of the earliest message to show. It can be specified in several formats.
 
-emote log 2012-09-13T14:34:28Z
+GMT specified as ISO 8601: 2012-09-13T17:30:00
+Local time specified as ISO 8601 and including the offset to the timezone: 2012-09-13T10:30:00-07:00
+Local time, assuming your current timezone (the quotes are required): "2012-09-13 10:30:00"
+Relative time (as in, "starting 5 minutes ago"): 5m
+Relative time (as in, "starting 2 hours ago"): 2h
 
-or relative time in minutes:
+If you specify just the <start time> you will get all the log entries that have been recorded since that time until the current moment. If you specify an <end time> as well, you will only see those records between "start" and "end".
 
-emote log 5m
+You can add the "--tail" option which will show all the records from the <start time> to the present, and then periodically append new log records as they arrive. (If you specify "--tail" with no <start time> it will assume you wanted "5m".)
 
-The relative time starts the specified number of minute before the present. For example, if you are testing something and it fails, you can show the most recent 5 minutes from the log this way.
+The output is normally shown with GMT timestamps, but if you add the "--local" option the timestamps will be converted to your local time zone (and the times will have an "L" appended to remind you it's not GMT).
+
+The output is normally designed to be human-readable, but you can specify the "--csv" option and the output will be written in CSV format so it could be fed into another program.
+
+Some common examples:
+
+Show the log data for the previous 5 minutes then tail the log to show new output as it arrives:
+
+emote log --tail
+
+Show the log data for the previous 2 minutes then tail the log to show new output as it arrives, converting the timestamps to local time:
+
+emote log 2m --tail --local
+
+Show the log data for a certain date from 9 to 10 am in the local time zone, output in CSV format:
+
+emote log "2012-09-13 09:00:00" "2012-09-13 10:00:00" --csv
+
 
 ## cleanAll
 
