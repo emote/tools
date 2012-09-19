@@ -1,0 +1,18 @@
+{
+    "author": "Emotive generated SOAP proxy",
+    "name": "/*insert: subject.name */",
+    "description": "/*insert: subject.name */ package",
+    "version": "1.0.1",
+    "homepage": "http://www.emotive.com",
+    "dependencies": {
+        "emproxy"   : "https://github.com/emote/emproxy/tarball/v1.0.5",
+        "emsoap"    : "https://github.com/emote/emsoap/tarball/v1.0.1",
+        "emutils"   : "https://github.com/emote/emutils/tarball/v1.0.1",
+        "emxml2js"  : "https://github.com/emote/emxml2js/tarball/v0.1.14"
+    },
+    "devDependencies": {},
+    "optionalDependencies": {},
+    "engines": {
+        "node": ">=0.8.0"
+    }
+}
