@@ -292,15 +292,25 @@ emote getWsdl subproject wsdlUrl service port [username password]
 Specify service and port by their simple (unqualified) names. username and password are the credentials (if any)
 needed to read the WSDL.  subproject is the name of the subproject you wish to create.
 
-This is the first step in creating a SOAP-service-based subproject.  It will fetch the WSDL for a web service and create two
+This is the first step in creating a SOAP-service-based subproject.  It will fetch the WSDL for a web service and create three
 files in your project's <subproject>/model directory:
 
 * wsdl.json contains a JSON version of the web service's definitions.
 * wsdlOps.json contains a list of the web service's operations.
+* proxyConfig.json allows you to configure the connection from the generated proxy to toe target SOAP service.
 
 wsdlOps.json determined which web service operations will be part of the generated subproject.  Originally, all of the
 operations are disabled (set to false.) Before generating, edit this file to set the desired operations to "true".
-Next, use the generateFromWsdl command to generate your subproject.
+
+proxyConfig.json will optionally pass these connection properties to the generated proxy. (By default, all are set to null,
+so the default behavior applies.)
+
+* By default, the proxy will expect to find the SOAP service at the soapAddress given in the WSDL port.  If this is
+  incorrect, set the soapAddress property in proxyConfig.json to the correct service endpoint URL.
+* By default, no HTTP[S] authentication is used when talking to the SOAP service.  If basic authentication is required,
+  set the user name and password in proxyConfig.json.
+
+After editing these two files, use the generateFromWsdl command to generate your subproject.
 
 ## generateFromWsdl
 
