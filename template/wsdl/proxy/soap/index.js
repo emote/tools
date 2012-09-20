@@ -23,6 +23,13 @@ for (var opName in descs.operations) {
             }
         });
     }
+    if (op.responseDesc && op.responseDesc.parts) {
+        op.responseDesc.parts.forEach(function(part) {
+            if (part.xmlType) {
+                part.type = descs.types[soaputils.makeQname(part.xmlTypeNs, part.xmlType)];
+            }
+        });
+    }
 }
 
 for (var typeName in descs.types) {
@@ -56,7 +63,7 @@ function processDirective(restRequest,callback) {
 
 function callSoapOperation(input, op, callback) {
     callSoap(input, descs.httpOptions, op.requestDesc,
-        op.deserializationOpts, op.responseDesc, callback);
+        op.deserializationOptions, op.responseDesc, callback);
 };
 
 function callSoap(input, httpOptions, requestDesc, deserOpts, responseDesc, cb) {
