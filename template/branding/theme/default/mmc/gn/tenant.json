@@ -1,11 +1,8 @@
 {
     "textColor":"#000000",
-    "headerColorSolid":"#1074B4",
-    "headerColorGradientStart":"#6BB5E4",
-    "headerColorGradientEnd":"#005AA9",
+    "headerColorGradientStart":"#1074B4",
     "headerTextColor":"#FFFFFF",
     "backgroundColorGradientStart":"#FFFFFF",
-    "backgroundColorGradientEnd":"#FFFFFF",
     "insetListTextColor":"#1074B4"
 }
 
