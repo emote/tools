@@ -1,6 +1,6 @@
 {
     "author": "Emotive generated SOAP proxy",
-    "name": "/*insert: subject.name */",
+    "name": "/*insert: subject.target */",
     "description": "/*insert: subject.name */ package",
     "version": "1.0.1",
     "homepage": "http://www.emotive.com",

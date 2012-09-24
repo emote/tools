@@ -7,6 +7,9 @@ var emutils = require('emutils');
 
 var soaputils = emsoap.subsystems.soaputils;
 
+var httpOptions = emutils.clone(descs.httpOptions);
+var badEndpoint;
+
 for (var typeName in descs.types) {
     var type = descs.types[typeName];
     if (type.baseTypeName) {
@@ -43,7 +46,23 @@ for (var typeName in descs.types) {
 
 emproxy.init(function afterInitCallback(initialConfig) {
     console.dir(initialConfig);
-    emproxy.start(processDirective);
+    if (initialConfig.endpoint) {
+        httpOptions = emsoap.subsystems.httpRequest.parseUrl(initialConfig.endpoint);
+        if (httpOptions) {
+            httpOptions.method="POST";
+        }
+        else {
+            badEndpoint = initialConfig.endpoint;
+            console.log("Unable to parse the SOAP endpoint URL '" + initialConfig.endpoint + "' .");
+            console.log("The proxy will be unable to communicate with the target service.");
+            console.log("Please supply a correctly formatted URL.")
+        }
+    }
+    if (httpOptions && initialConfig.usename) {
+        httpOptions.auth = initialConfig.username + ":" + initialConfig.password;
+    }
+
+emproxy.start(processDirective);
 });
 
 function processDirective(restRequest,callback) {
@@ -62,11 +81,14 @@ function processDirective(restRequest,callback) {
 }
 
 function callSoapOperation(input, op, callback) {
-    callSoap(input, descs.httpOptions, op.requestDesc,
+    callSoap(input, httpOptions, op.requestDesc,
         op.deserializationOptions, op.responseDesc, callback);
-};
+}
 
 function callSoap(input, httpOptions, requestDesc, deserOpts, responseDesc, cb) {
+    if (badEndpoint) {
+        cb(new Error("The proxy has been configured with the invalid endpoint '" + badEndpoint + "'"));
+    }
     var opHttpOptions = emutils.clone(httpOptions);
     if (!opHttpOptions.headers) {
         opHttpOptions.headers = {};
