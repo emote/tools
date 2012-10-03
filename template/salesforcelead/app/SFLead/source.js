@@ -11,19 +11,19 @@ function CDF_Ready()
     //
     //  Declare whether or not this application would benefit from data caching
     //
-    FW.allowDataCaching = true;
+    Emotive.App.Collections.allowCaching(true);
 
     var requestedQueries = new Array();
-    requestedQueries.push(new DeclareDataValueObject("DM.lead","Lead"));
-    requestedQueries.push(new QueryRequestObject({op:'SELECT', targetType:'Lead'},"DM.allLeads","DM.allLeadsHash",{extraHashKey:"externalId"}));
-    FW.submitToServer(onRequestDataReady, requestedQueries);
+    requestedQueries.push(new DeclareDataValueObject("Emotive.Data.lead","Lead"));
+    requestedQueries.push(new QueryRequestObject({op:'SELECT', targetType:'Lead'},"Emotive.Data.allLeads","Emotive.Data.allLeadsHash",{extraHashKey:"externalId"}));
+    Emotive.Service.submit(requestedQueries, onRequestDataReady);
 
     //
     // Declare an event handler to fire before the #Loading page is about to be shown.
     //
     $('#Loading').bind('pagebeforeshow', function(event)
     {
-        FW.setHeaderTitle("Loading...");
+        Emotive.Ui.Header.setTitle("Loading...");
     });
 
 //
@@ -31,8 +31,8 @@ function CDF_Ready()
 //
     $('#MainPage').bind('pagebeforeshow', function(event)
         {
-            FW.setHeaderTitle("Leads");
-            FW.setBack(null);
+            Emotive.Ui.Header.setTitle("Leads");
+            Emotive.Ui.Header.setBackButton(null);
         }
     );
 
@@ -41,8 +41,8 @@ function CDF_Ready()
     //
     $('#LeadDetail').bind('pagebeforeshow', function(event)
         {
-            FW.setHeaderTitle(DM.lead.Name);
-            FW.setBack('#MainPage');
+            Emotive.Ui.Header.setTitle(Emotive.Data.lead.Name);
+            Emotive.Ui.Header.setBackButton('#MainPage');
         }
     );
 }
@@ -58,11 +58,11 @@ function onRequestDataReady()
 
     var s = "";
 
-    FW.sortObjectsByString(DM.allLeads, "Name", true);
+    Emotive.Js.Arrays.sortObjectsByString(Emotive.Data.allLeads, "Name", true);
 
-    for (var i=0; i<DM.allLeads.length; i++)
+    for (var i=0; i<Emotive.Data.allLeads.length; i++)
     {
-        var lead = DM.allLeads[i];
+        var lead = Emotive.Data.allLeads[i];
 
         s +=    '<li>' +
                     '<a href="javascript:selectLead(\'' + lead.externalId + '\')">' +
@@ -73,20 +73,20 @@ function onRequestDataReady()
 
     $("#leadList").append(s);
 
-    FW.refreshListview("#leadList");
+    Emotive.$.refreshListview("#leadList");
 
-    FW.changePage("#MainPage");
+    Emotive.App.changePage("#MainPage");
 };
 
 function selectLead(externalId)
 {
-    var lead = DM.allLeadsHash[externalId];
+    var lead = Emotive.Data.allLeadsHash[externalId];
 
-    DM.set("DM.lead",lead);
+    Emotive.Data.set("Emotive.Data.lead",lead);
 
-    $("#theEmail").attr('href', 'mailto:' + DM.lead.Email);
-    $("#thePhone").attr('href', 'tel:' + DM.lead.Phone);
+    $("#theEmail").attr('href', 'mailto:' + Emotive.Data.lead.Email);
+    $("#thePhone").attr('href', 'tel:' + Emotive.Data.lead.Phone);
 
-    FW.changePage("#LeadDetail");
+    Emotive.App.changePage("#LeadDetail");
 }
 

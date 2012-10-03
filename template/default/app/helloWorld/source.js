@@ -13,33 +13,33 @@ $(document).ready(CDF_Initialize);
 function CDF_Ready()
 {
     var requestedQueries = new Array();
-    requestedQueries.push(new DeclareDataValueObject("DM.hello","String"));
+    requestedQueries.push(new DeclareDataValueObject("Emotive.Data.hello","String"));
     //
     //  In most apps this call will include REST requests to the Emotive Mobile Messaging Server (MMS). In this
-    //  simple example we just declare the "DM.hello" data value and immediately invoke the onRequestDataReady()
+    //  simple example we just declare the "Emotive.Data.hello" data value and immediately invoke the onRequestDataReady()
     //  callback function below.
     //
-    FW.submitToServer(onRequestDataReady, requestedQueries);
+    Emotive.Service.submit(requestedQueries, onRequestDataReady);
 
     $('#Loading').bind('pagebeforeshow', function(event)
     {
-        FW.setHeaderTitle("Loading...");
+        Emotive.Ui.Header.setTitle("Loading...");
     });
 
     $('#MainPage').bind('pagebeforeshow', function(event)
     {
-        FW.setHeaderTitle("Hello, World!");
-        FW.setBack(null);
+        Emotive.Ui.Header.setTitle("Hello, World!");
+        Emotive.Ui.Header.setBackButton(null);
     });
 }
 
 //
-//  After the FW.submitToServer call above has completed it will drive this callback. In applications
+//  After the Emotive.Service.submit call above has completed it will drive this callback. In applications
 //  which do actual server requests the query results would now be available.
 //
 function onRequestDataReady()
 {
-    DM.set("DM.hello","Hello, " + FW.getUsername() + "!");
-    FW.changePage("#MainPage");
+    Emotive.Data.set("Emotive.Data.hello","Hello, " + Emotive.User.getName() + "!");
+    Emotive.App.changePage("#MainPage");
 }
 

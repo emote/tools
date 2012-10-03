@@ -10,26 +10,26 @@ function CDF_Ready()
     //
     //  Declare whether or not this application would benefit from data caching
     //
-    FW.allowDataCaching = false;
+    Emotive.App.Collections.allowCaching(false);
       
     //
     //  These are the queries we will need to begin the application (and the DM.* variables which will contain the result).
     //
     var requestedQueries = new Array();
-    requestedQueries.push(new QueryRequestObject({op:"SELECT", targetType:"Feature"}, "DM.allFeatures", "DM.featureHash"));
+    requestedQueries.push(new QueryRequestObject({op:"SELECT", targetType:"Feature"}, "Emotive.Data.allFeatures", "Emotive.Data.featureHash"));
     
     //
     //  Initialize the Framework; this will activate the Element-to-Data bindings and run the requested
     //  queries (for data and metadata). This is data we need before the first page can be displayed.
     //
-    FW.submitToServer(onRequestDataReady, requestedQueries);    
+    Emotive.Service.submit(requestedQueries, onRequestDataReady);
     
     //
     // Declare an event handler to fire before the #Loading page is about to be shown.
     //
     $('#Loading').bind('pagebeforeshow', function(event)
     {
-        FW.setHeaderTitle("Loading...");
+        Emotive.Ui.Header.setTitle("Loading...");
     });
 	
 	//
@@ -37,8 +37,8 @@ function CDF_Ready()
 	//
     $('#MainPage').bind('pagebeforeshow', function(event)
     {
-        FW.setHeaderTitle("Earthquakes");
-        FW.setBack(null);
+        Emotive.Ui.Header.setTitle("Earthquakes");
+        Emotive.Ui.Header.setBackButton(null);
     });
 
     //
@@ -47,9 +47,9 @@ function CDF_Ready()
     $('#Map').bind('pageshow', function(event)
         {
             loadMap();
-            FW.setHeaderTitle("Map");
-            FW.setBack('#MainPage');
-            FW.setRightButton(null);
+            Emotive.Ui.Header.setTitle("Map");
+            Emotive.Ui.Header.setBackButton('#MainPage');
+            Emotive.Ui.Header.setRightButton(null);
         }
     );
 
@@ -68,13 +68,13 @@ function regenerateMainPage()
 {
     $("#earthquakes").empty();
 
-    var fo = FW.getCdfTypeFromHash("Date");
+    var fo = Emotive.App.Model.getCdfTypeFromHash("Date");
 
     var html = "";
 
-    var features = DM.allFeatures;
+    var features = Emotive.Data.allFeatures;
 
-    FW.sortObjectsByNumber(features, "mag", false);
+    Emotive.Js.Arrays.sortObjectsByNumber(features, "mag", false);
     //
     //  Generate Accounts List
     //
@@ -92,56 +92,56 @@ function regenerateMainPage()
 
     $("#earthquakes").append(html);
 
-    FW.refreshListview("#earthquakes");
+    Emotive.$.refreshListview("#earthquakes");
 
-    FW.changePage("#MainPage");
+    Emotive.App.changePage("#MainPage");
 }
 
 function featureClicked(featureId)
 {
-    DM.feature = DM.featureHash[featureId];
+    Emotive.Data.feature = Emotive.Data.featureHash[featureId];
 
-    if (DM.feature)
+    if (Emotive.Data.feature)
     {
-        FW.changePage("#Map");
+        Emotive.App.changePage("#Map");
     }
 }
 
 function loadMap()
 {
     // Initialize the center point of the map
-    DM.quakePosition = new google.maps.LatLng(DM.feature.latitude,DM.feature.longitude);
+    Emotive.Data.quakePosition = new google.maps.LatLng(Emotive.Data.feature.latitude,Emotive.Data.feature.longitude);
 
     // Create the options for the map
     var myOptions =
     {
-        center : DM.quakePosition,
+        center : Emotive.Data.quakePosition,
         zoom : 9,
         mapTypeId : google.maps.MapTypeId.ROADMAP
     };
 
-    $("#map_canvas").css('height',FW.getClientHeight() + "px");
-    $("#map_canvas").css('width',FW.getClientWidth() + "px");
+    $("#map_canvas").css('height',Emotive.Ui.getClientHeight() + "px");
+    $("#map_canvas").css('width',Emotive.Ui.getClientWidth() + "px");
 
     //
     //  If the map already exists we just need to recenter
     //
-    if (DM.googleMap)
+    if (Emotive.Data.googleMap)
     {
-        DM.googleMap.setOptions(myOptions);
+        Emotive.Data.googleMap.setOptions(myOptions);
     }
     else
     {
         // Create the map
-        DM.googleMap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        Emotive.Data.googleMap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
         // Bind the listener for canvas resize (in the event of a change from portrait to landscape)
         google.maps.event.addListener(document.getElementById("map_canvas"), 'resize',
             function()
             {
-                $("#map_canvas").css('height',FW.getClientHeight() + "px");
-                $("#map_canvas").css('width',FW.getClientWidth() + "px");
-                DM.googleMap.setCenter(DM.quakePosition);
+                $("#map_canvas").css('height',Emotive.Ui.getClientHeight() + "px");
+                $("#map_canvas").css('width',Emotive.Ui.getClientWidth() + "px");
+                Emotive.Data.googleMap.setCenter(Emotive.Data.quakePosition);
             });
     }
 
@@ -150,9 +150,9 @@ function loadMap()
     //
     var marker = new google.maps.Marker(
         {
-            position: DM.quakePosition,
-            map: DM.googleMap,
-            title: DM.feature.magAndTime
+            position: Emotive.Data.quakePosition,
+            map: Emotive.Data.googleMap,
+            title: Emotive.Data.feature.magAndTime
         });
 }
 

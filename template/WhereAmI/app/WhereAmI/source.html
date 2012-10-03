@@ -26,7 +26,7 @@
 
 	<section id="MainPage" data-role="page">
 		<div data-role="content" style="padding:0px 15px">
-            <select id="myStatus" data-ec-bindto="DM.me.place" data-mini="true" ></select>
+            <select id="myStatus" data-ec-bindto="Emotive.Data.me.place" data-mini="true" ></select>
             <ul id="peopleList" data-inset="true" data-role="listview" style="margin-top:30px">
             </ul>
 		</div>
@@ -54,22 +54,22 @@
                     <table class="prettyTable1" width="100%" cellpadding="0" cellspacing="0" >
                         <tbody>
                         <tr >
-                            <td >Username:</td><td width="100%"><div id="pUsername" style="font-weight:normal" data-ec-bindto="DM.person.username"></div></td>
+                            <td >Username:</td><td width="100%"><div id="pUsername" style="font-weight:normal" data-ec-bindto="Emotive.Data.person.username"></div></td>
                         </tr>
                         <tr >
-                            <td >Alias:</td><td width="100%"><div id="pAlias" style="font-weight:normal" data-ec-bindto="DM.person.alias"></div></td>
+                            <td >Alias:</td><td width="100%"><div id="pAlias" style="font-weight:normal" data-ec-bindto="Emotive.Data.person.alias"></div></td>
                         </tr>
                         <tr>
-                            <td>Location:</td><td><div id="pLocation" style="font-weight:normal" data-ec-bindto="DM.person.place"></div></td>
+                            <td>Location:</td><td><div id="pLocation" style="font-weight:normal" data-ec-bindto="Emotive.Data.person.place"></div></td>
                         </tr>
                         <tr>
                             <td></td><td><div id="longLat" style="font-weight:normal" ></div></td>
                         </tr>
                         <tr >
-                            <td>Updated:</td><td><div id="pTime" class="ec-left" style="font-weight:normal" data-ec-bindto="DM.person.timeOfUpdate" ></div></td>
+                            <td>Updated:</td><td><div id="pTime" class="ec-left" style="font-weight:normal" data-ec-bindto="Emotive.Data.person.timeOfUpdate" ></div></td>
                         </tr>
                         <tr>
-                            <td valign="top">Note:</td><td><div id="pNotes" style="font-weight:normal" data-ec-bindto="DM.formattedNotes"></div></td>
+                            <td valign="top">Note:</td><td><div id="pNotes" style="font-weight:normal" data-ec-bindto="Emotive.Data.formattedNotes"></div></td>
                         </tr>
                         </tbody>
                     </table>
@@ -100,16 +100,16 @@
             <ul data-role="listview" data-inset="true">
                 <li data-role="fieldcontain" class="CdfFormBg">
                     <label for="editMyUsername" style="display: block">Username:</label>
-                    <input id='editMyUsername' disabled="disabled" data-theme="d" data-ec-bindto="DM.me.username"/>
+                    <input id='editMyUsername' disabled="disabled" data-theme="d" data-ec-bindto="Emotive.Data.me.username"/>
 
                     <label for="editMyAlias" style="display: block">Alias:</label>
-                    <input id='editMyAlias' data-theme="d" data-ec-bindto="DM.me.alias"/>
+                    <input id='editMyAlias' data-theme="d" data-ec-bindto="Emotive.Data.me.alias"/>
 
                     <label for="editMyStatus" class="select" style="display: block">Status</label>
-                    <select id="editMyStatus" data-ec-bindto="DM.me.place" data-mini="true" ></select>
+                    <select id="editMyStatus" data-ec-bindto="Emotive.Data.me.place" data-mini="true" ></select>
 
                    <label for="editMyNotes" style="display: block">Notes:</label>
-                    <textarea style="width: 100%" name="textarea" data-theme="d" id="editMyNotes" data-ec-bindto="DM.me.notes">
+                    <textarea style="width: 100%" name="textarea" data-theme="d" id="editMyNotes" data-ec-bindto="Emotive.Data.me.notes">
                     </textarea>
                 </li>
             </ul>

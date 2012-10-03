@@ -9,16 +9,16 @@ var currentLocObject = null;
 function CDF_Ready()
 {
     // Provide the callback to the function that will get called every time the coordinates update
-    FW.watchPosition(currentPositionUpdated);
+    Emotive.Device.Gps.watchPosition(currentPositionUpdated);
 
     //
     //  Declare whether or not this application would benefit from data caching
     //
-    FW.allowDataCaching = true;
+    Emotive.App.Collections.allowCaching(true);
 
     var options = {onCacheComplete:onCacheComplete};
 
-    var obj = FW.getPersistedProperties();
+    var obj = Emotive.App.Collections.getPersistedProperties();
 
     if (obj && obj.cacheIsDirty)
     {
@@ -29,29 +29,29 @@ function CDF_Ready()
         //  result. It just means the app will take a little longer to start because it won't rely on the
         //  data cache, but the user won't have to be bothered by a notification message.
         //
-        FW.setPersistedProperties({cacheIsDirty:true});
+        Emotive.App.Collections.setPersistedProperties({cacheIsDirty:true});
 
         options.refreshNotificationStrategy = RS_WAIT_FOR_RESPONSE;
     }
 
     var requestedQueries = new Array();
-    requestedQueries.push(new DeclareDataValueObject("DM.formattedNotes","String"));
-    requestedQueries.push(new DeclareDataValueObject("DM.me","UserInfo"));
-    requestedQueries.push(new DeclareDataValueObject("DM.person","UserInfo"));
-    requestedQueries.push(new QueryRequestObject({op:'SELECT', targetType:'UserInfo'},"DM.allPeople","DM.allPeopleHash",{extraHashKey:"username"}));
+    requestedQueries.push(new DeclareDataValueObject("Emotive.Data.formattedNotes","String"));
+    requestedQueries.push(new DeclareDataValueObject("Emotive.Data.me","UserInfo"));
+    requestedQueries.push(new DeclareDataValueObject("Emotive.Data.person","UserInfo"));
+    requestedQueries.push(new QueryRequestObject({op:'SELECT', targetType:'UserInfo'},"Emotive.Data.allPeople","Emotive.Data.allPeopleHash",{extraHashKey:"username"}));
 
     //
     //  Initialize the Framework; this will activate the Element-to-Data bindings and run the requested
     //  queries (for data and metadata). This is data we need before the first page can be displayed.
     //
-    FW.submitToServer(onRequestDataReady, requestedQueries,options);
+    Emotive.Service.submit(requestedQueries, onRequestDataReady, options);
 
     //
     // Declare an event handler to fire before the #Loading page is about to be shown.
     //
     $('#Loading').bind('pagebeforeshow', function(event)
     {
-        FW.setHeaderTitle("Loading...");
+        Emotive.Ui.Header.setTitle("Loading...");
     });
 
 //
@@ -59,8 +59,8 @@ function CDF_Ready()
 //
     $('#MainPage').bind('pagebeforeshow', function(event)
         {
-            FW.setHeaderTitle("Where am I?");
-            FW.setBack(null);
+            Emotive.Ui.Header.setTitle("Where am I?");
+            Emotive.Ui.Header.setBackButton(null);
         }
     );
 
@@ -69,8 +69,8 @@ function CDF_Ready()
     //
     $('#PersonDetail').bind('pagebeforeshow', function(event)
         {
-            FW.setHeaderTitle(DM.person.alias);
-            FW.setBack('#MainPage');
+            Emotive.Ui.Header.setTitle(Emotive.Data.person.alias);
+            Emotive.Ui.Header.setBackButton('#MainPage');
         }
     );
     //
@@ -78,13 +78,13 @@ function CDF_Ready()
     //
     $('#EditPage').bind('pagebeforeshow', function(event)
         {
-            FW.setHeaderTitle("Edit details");
-            FW.setBack('#MainPage');
+            Emotive.Ui.Header.setTitle("Edit details");
+            Emotive.Ui.Header.setBackButton('#MainPage');
         }
     );
     $('#EditPage').bind('pageshow', function(event)
         {
-            if (DM.initializeProfile)
+            if (Emotive.Data.initializeProfile)
             {
                 $('#editMyAlias').focus();
                 $('#editMyAlias').select();
@@ -103,9 +103,9 @@ function CDF_Ready()
     $('#Map').bind('pageshow', function(event)
         {
             loadMap();
-            FW.setHeaderTitle("Map");
-            FW.setBack('#PersonDetail');
-            FW.setRightButton(null);
+            Emotive.Ui.Header.setTitle("Map");
+            Emotive.Ui.Header.setBackButton('#PersonDetail');
+            Emotive.Ui.Header.setRightButton(null);
         }
     );
 
@@ -113,7 +113,7 @@ function CDF_Ready()
 
 function onCacheComplete()
 {
-    FW.setPersistedProperties({cacheIsDirty:false});
+    Emotive.App.Collections.setPersistedProperties({cacheIsDirty:false});
 }
 function currentPositionUpdated(coord)
 {
@@ -122,7 +122,7 @@ function currentPositionUpdated(coord)
     //
     if (coord.error)
     {
-        FW.alert(coord.error);
+        Emotive.Ui.Dialog.alert(coord.error);
     }
     // Otherwise extract the latitude and longitude
     else
@@ -137,8 +137,8 @@ function currentPositionUpdated(coord)
 //
 function onRequestDataReady()
 {
-    var myPersonObject = DM.allPeopleHash[FW.getUsername()];
-    DM.initializeProfile = false;
+    var myPersonObject = Emotive.Data.allPeopleHash[Emotive.User.getName()];
+    Emotive.Data.initializeProfile = false;
 
     //
     //  If we are not already in the database then we should force us to be added.
@@ -147,35 +147,35 @@ function onRequestDataReady()
     {
         myPersonObject = {
             targetType: "UserInfo",
-            username: FW.getUsername(),
-            alias: FW.getUsername(),
+            username: Emotive.User.getName(),
+            alias: Emotive.User.getName(),
             notes: "",
             place: "unknown"
         };
 
-        DM.allPeopleHash[FW.getUsername()] = myPersonObject;
-        DM.allPeople.push(myPersonObject);
+        Emotive.Data.allPeopleHash[Emotive.User.getName()] = myPersonObject;
+        Emotive.Data.allPeople.push(myPersonObject);
 
-        DM.initializeProfile = true;
+        Emotive.Data.initializeProfile = true;
     }
 
-    DM.set("DM.me",myPersonObject);
+    Emotive.Data.set("Emotive.Data.me",myPersonObject);
 
     $("#peopleList").empty();
 
     var s = "";
 
-    DM.markerHash = new Object();
+    Emotive.Data.markerHash = new Object();
 
-    FW.sortObjectsByString(DM.allPeople, "alias", true);
+    Emotive.Js.Arrays.sortObjectsByString(Emotive.Data.allPeople, "alias", true);
 
-    var fodt = FW.getCdfTypeFromHash("Date");
+    var fodt = Emotive.App.Model.getCdfTypeFromHash("Date");
 
-    for (var i=0; i<DM.allPeople.length; i++)
+    for (var i=0; i<Emotive.Data.allPeople.length; i++)
     {
-        var person = DM.allPeople[i];
+        var person = Emotive.Data.allPeople[i];
 
-        var loc = FW.getEnumerationObject('Place',person.place);
+        var loc = Emotive.App.Model.getEnumerationObject('Place',person.place);
         var locString;
 
         if (person.loc)
@@ -187,7 +187,7 @@ function onRequestDataReady()
             var latitude = person.loc.lat.toFixed(4);
             var key = "Ln" + longitude + "Lt" + latitude;
 
-            var area = DM.markerHash[key];
+            var area = Emotive.Data.markerHash[key];
 
             if (!area)
             {
@@ -195,7 +195,7 @@ function onRequestDataReady()
                 area.longitude = longitude;
                 area.latitude = latitude;
                 area.people = new Array();
-                DM.markerHash[key] = area;
+                Emotive.Data.markerHash[key] = area;
             }
 
             area.people.push(person);
@@ -225,25 +225,25 @@ function onRequestDataReady()
 
     $("#peopleList").append(s);
 
-    FW.refreshListview("#peopleList");
+    Emotive.$.refreshListview("#peopleList");
 
-    if (DM.initializeProfile)
+    if (Emotive.Data.initializeProfile)
     {
-        FW.alert("You are not currently in the database; edit your profile and try again.");
-        FW.changePage("#EditPage");
+        Emotive.Ui.Dialog.alert("You are not currently in the database; edit your profile and try again.");
+        Emotive.App.changePage("#EditPage");
     }
     else
     {
-        FW.changePage("#MainPage");
+        Emotive.App.changePage("#MainPage");
     }
 
 };
 
 function selectPerson(id)
 {
-    var person = DM.allPeopleHash[id];
+    var person = Emotive.Data.allPeopleHash[id];
 
-    DM.set("DM.person",person);
+    Emotive.Data.set("Emotive.Data.person",person);
 
     if (person.loc)
     {
@@ -253,18 +253,18 @@ function selectPerson(id)
     {
         $('#longLat').text("No Latitude/Longitude data");
     }
-    FW.changePage("#PersonDetail");
+    Emotive.App.changePage("#PersonDetail");
 }
 
 function showMap()
 {
-    if (DM.person && DM.person.loc)
+    if (Emotive.Data.person && Emotive.Data.person.loc)
     {
-        FW.changePage("#Map");
+        Emotive.App.changePage("#Map");
     }
     else
     {
-        FW.alert("No position data");
+        Emotive.Ui.Dialog.alert("No position data");
     }
 
 }
@@ -272,7 +272,7 @@ function showMap()
 function loadMap()
 {
     // Initialize the center point of the map
-    var myLatLng = new google.maps.LatLng(DM.person.loc.lat,DM.person.loc.lon);
+    var myLatLng = new google.maps.LatLng(Emotive.Data.person.loc.lat,Emotive.Data.person.loc.lon);
 
     // Create the options for the map
     var myOptions =
@@ -282,33 +282,33 @@ function loadMap()
         mapTypeId : google.maps.MapTypeId.ROADMAP
     };
 
-    $("#map_canvas").css('height',FW.getClientHeight() + "px");
-    $("#map_canvas").css('width',FW.getClientWidth() + "px");
+    $("#map_canvas").css('height',Emotive.Ui.getClientHeight() + "px");
+    $("#map_canvas").css('width',Emotive.Ui.getClientWidth() + "px");
 
     //
     //  If the map already exists we just need to recenter
     //
-    if (DM.googleMap)
+    if (Emotive.Data.googleMap)
     {
-        DM.googleMap.setOptions(myOptions);
+        Emotive.Data.googleMap.setOptions(myOptions);
     }
     else
     {
 
         // Create the map
-        DM.googleMap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        Emotive.Data.googleMap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
         // Bind the listener for canvas resize (in the event of a change from portrait to landscape)
         google.maps.event.addListener(document.getElementById("map_canvas"), 'resize', function(){
-            $("#map_canvas").css('height',FW.getClientHeight() + "px");
-            $("#map_canvas").css('width',FW.getClientWidth() + "px");
+            $("#map_canvas").css('height',Emotive.Ui.getClientHeight() + "px");
+            $("#map_canvas").css('width',Emotive.Ui.getClientWidth() + "px");
         });
 
-        for (var key in DM.markerHash)
+        for (var key in Emotive.Data.markerHash)
         {
-            var area = DM.markerHash[key];
+            var area = Emotive.Data.markerHash[key];
 
-            FW.sortObjectsByString(area.people, "alias", true);
+            Emotive.Js.Arrays.sortObjectsByString(area.people, "alias", true);
 
             var title = null;
 
@@ -328,7 +328,7 @@ function loadMap()
             var marker = new google.maps.Marker(
                 {
                     position: new google.maps.LatLng(area.latitude,area.longitude),
-                    map: DM.googleMap,
+                    map: Emotive.Data.googleMap,
                     title: title
                 });
 
@@ -346,7 +346,7 @@ function updateMe()
     var obj = new Object();
     var subject;
 
-    if (DM.initializeProfile)
+    if (Emotive.Data.initializeProfile)
     {
         obj.op = "INSERT";
         subject = "Initialize my location status profile";
@@ -356,31 +356,32 @@ function updateMe()
         obj.op = "UPDATE";
 
         obj.where = new Object();
-        obj.where.id = DM.me.id;
+        obj.where.id = Emotive.Data.me.id;
 
-        var newPlaceObj = FW.getEnumerationObject('Place',DM.me.place);
+        var newPlaceObj = Emotive.App.Model.getEnumerationObject('Place',Emotive.Data.me.place);
         subject = "Changed my location to '" + newPlaceObj.label + "'";
     }
 
-    DM.set("DM.me.timeOfUpdate",(new Date()).getTime());
+    Emotive.Data.set("Emotive.Data.me.timeOfUpdate",(new Date()).getTime());
 
     obj.targetType = "UserInfo";
 
     obj.values = new Object();
-    obj.values["username"] = DM.me.username;
-    obj.values["place"] = DM.me.place;
-    obj.values["timeOfUpdate"] = DM.me.timeOfUpdate;
-    obj.values["notes"] = DM.me.notes;
-    obj.values["alias"] = DM.me.alias;
+    obj.values["username"] = Emotive.Data.me.username;
+    obj.values["place"] = Emotive.Data.me.place;
+    obj.values["timeOfUpdate"] = Emotive.Data.me.timeOfUpdate;
+    obj.values["notes"] = Emotive.Data.me.notes;
+    obj.values["alias"] = Emotive.Data.me.alias;
     obj.values["loc"] = currentLocObject;
 
     if (currentLocObject == null)
     {
-        FW.alert("No Latitude/Longitude data yet; try again");
+        Emotive.Ui.Dialog.alert("No Latitude/Longitude data yet; try again");
         return;
     }
 
-    FW.submitToServer(function(requestArray)
+    Emotive.Service.submit([new NonQueryRequestObject(obj,{subject:subject})],
+        function(requestArray)
         {
             //
             //  This is signal to the *next* invocation of the app that we *know* at least one
@@ -389,31 +390,30 @@ function updateMe()
             //  result. It just means the app will take a little longer to start because it won't rely on the
             //  data cache, but the user won't have to be bothered by a notification message.
             //
-            FW.setPersistedProperties({cacheIsDirty:true});
-            FW.fadeawayAndExit("Success");
-        },
-        [new NonQueryRequestObject(obj,{subject:subject})]);
+            Emotive.App.Collections.setPersistedProperties({cacheIsDirty:true});
+            Emotive.Ui.Dialog.fadeawayAndExit("Success");
+        });
 
 }
 
 function editMyStatus()
 {
-    FW.changePage("#EditPage");
+    Emotive.App.changePage("#EditPage");
 }
 
-BindingObject.defineFunction("formatNotes",["DM.person.notes"]);
+BindingObject.defineFunction("formatNotes",["Emotive.Data.person.notes"]);
 function formatNotes(trackerObject)
 {
     var txt;
 
-    if (DM.person && DM.person.notes)
+    if (Emotive.Data.person && Emotive.Data.person.notes)
     {
-        txt = DM.person.notes.replace(/\n/g,"</br>");
+        txt = Emotive.Data.person.notes.replace(/\n/g,"</br>");
     }
     else
     {
         txt = "";
     }
 
-   DM.set("DM.formattedNotes",txt);
+   Emotive.Data.set("Emotive.Data.formattedNotes",txt);
 }

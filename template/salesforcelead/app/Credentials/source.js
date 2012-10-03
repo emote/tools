@@ -10,39 +10,44 @@ function CDF_Ready()
     //
     //  Declare whether or not this application would benefit from data caching
     //
-    FW.allowDataCaching = false;
+    Emotive.App.Collections.allowCaching(false);
+
+    //
+    //  Get a hash table containing the query parameters the application was called with.
+    //
+    var queryHash = Emotive.App.getQueryParameters();
 
     //
     //  This parameter will be supplied by the MMC; it will be the "instance name" of the external system
     //
-    if (FW.queryHash["xsName"])
+    if (queryHash["xsName"])
     {
-        DM.externalSystemName = FW.queryHash["xsName"];
+        Emotive.Data.externalSystemName = queryHash["xsName"];
 
         //
         //  Decode the system name if necessary
         //
-        if (DM.externalSystemName.charAt(0) == "_")
+        if (Emotive.Data.externalSystemName.charAt(0) == "_")
         {
-            DM.externalSystemName = FW.decodeString(DM.externalSystemName);
+            Emotive.Data.externalSystemName = Emotive.Js.Strings.decodeNonAlphanumericString(Emotive.Data.externalSystemName);
         }
     }
     else
     {
-        FW.alertAndExit("This 'xsName' parameter is missing so this application cannot be launched.");
+        Emotive.Ui.Dialog.alertAndExit("This 'xsName' parameter is missing so this application cannot be launched.");
         return;
     }
 
     //
     //  This parameter will be supplied by the MMC; it will be the "type" of the external system (probably 'SFDC' in this case)
     //
-    if (FW.queryHash["xsType"])
+    if (queryHash["xsType"])
     {
-        DM.externalSystemType = FW.queryHash["xsType"];
+        Emotive.Data.externalSystemType = queryHash["xsType"];
     }
     else
     {
-        FW.alertAndExit("This 'xsType' parameter is missing so this application cannot be launched.");
+        Emotive.Ui.Dialog.alertAndExit("This 'xsType' parameter is missing so this application cannot be launched.");
         return;
     }
 
@@ -50,25 +55,25 @@ function CDF_Ready()
     //  These are the queries we will need to begin the application (and the DM.* variable which will contain the result).
     //
     var requestedQueries = new Array(); 
-    requestedQueries.push(new DeclareDataValueObject("DM.credentials","ArrayOfCdmExternalCredentials"));    
-    requestedQueries.push(new DeclareDataValueObject("DM.credential","CdmExternalCredentials"));    
+    requestedQueries.push(new DeclareDataValueObject("Emotive.Data.credentials","ArrayOfCdmExternalCredentials"));    
+    requestedQueries.push(new DeclareDataValueObject("Emotive.Data.credential","CdmExternalCredentials"));    
 
-    requestedQueries.push(new QueryRequestObject({op:"SELECT", targetType:"CdmExternalSystem",where:{typeName:DM.externalSystemType,name:DM.externalSystemName}}, "DM.allExternalSystems"));
-    requestedQueries.push(new QueryRequestObject({op:"SELECT", targetType:"CdmExternalCredentials",where:{username: FW.getUsername(), externalSystem:DM.externalSystemName}}, "DM.allCredentials", "DM.allCredentialsHash", {"extraHashKey":"externalSystem"} ));
-    requestedQueries.push(new QueryRequestObject({op:"SELECT", targetType:"CdmTasklet",where:{extSysType:DM.externalSystemType,extSysName:DM.externalSystemName}}, "DM.allApps"));
+    requestedQueries.push(new QueryRequestObject({op:"SELECT", targetType:"CdmExternalSystem",where:{typeName:Emotive.Data.externalSystemType,name:Emotive.Data.externalSystemName}}, "Emotive.Data.allExternalSystems"));
+    requestedQueries.push(new QueryRequestObject({op:"SELECT", targetType:"CdmExternalCredentials",where:{username: Emotive.User.getName(), externalSystem:Emotive.Data.externalSystemName}}, "Emotive.Data.allCredentials", "Emotive.Data.allCredentialsHash", {"extraHashKey":"externalSystem"} ));
+    requestedQueries.push(new QueryRequestObject({op:"SELECT", targetType:"CdmTasklet",where:{extSysType:Emotive.Data.externalSystemType,extSysName:Emotive.Data.externalSystemName}}, "Emotive.Data.allApps"));
 
     //
     //  Initialize the Framework; this will activate the Element-to-Data bindings and run the requested
     //  queries (for data and metadata). This is data we need before the first page can be displayed.
     //
-    FW.submitToServer(onRequestDataReady, requestedQueries);    
+    Emotive.Service.submit(requestedQueries, onRequestDataReady);
 
     //
     // Declare an event handler to fire before the #SelectTask page is about to be shown.
     //
     $('#Loading').bind('pagebeforeshow', function(event)
         {
-            FW.setHeaderTitle("Loading...");
+            Emotive.Ui.Header.setTitle("Loading...");
             
         });
     
@@ -77,45 +82,45 @@ function CDF_Ready()
     //
     $('#MainPage').bind('pagebeforeshow', function(event)
         {
-            if (DM.externalSystemName)
+            if (Emotive.Data.externalSystemName)
             {
-                FW.setHeaderTitle(DM.externalSystemName);
+                Emotive.Ui.Header.setTitle(Emotive.Data.externalSystemName);
             }
             else
             {
-                FW.setHeaderTitle("Salesforce");
+                Emotive.Ui.Header.setTitle("Salesforce");
             }
         });     
 }
 
 function onRequestDataReady()
 {
-    if (DM.allApps.length == 0)
+    if (Emotive.Data.allApps.length == 0)
     {
-        FW.alertAndExit("The matching CdmTasklet object is not defined.");
+        Emotive.Ui.Dialog.alertAndExit("The matching CdmTasklet object is not defined.");
     }
-    else if (DM.allApps.length > 1)
+    else if (Emotive.Data.allApps.length > 1)
     {
-        FW.alertAndExit("There were " + DM.allApps.length + " matching instance of CdmTasklet object found.");
-    }
-    else
-    {
-        DM.app = DM.allApps[0];
-    }
-
-    if (DM.allExternalSystems.length == 0)
-    {
-        FW.alertAndExit("The '" + DM.externalSystemName + "' external system is not defined.");
-    }
-    else if (DM.allExternalSystems.length > 1)
-    {
-        FW.alertAndExit("There were " + DM.allExternalSystems.length + " instances of the '" + DM.externalSystemName + "' external system defined.");
+        Emotive.Ui.Dialog.alertAndExit("There were " + Emotive.Data.allApps.length + " matching instance of CdmTasklet object found.");
     }
     else
     {
-        DM.externalSystem = DM.allExternalSystems[0];
+        Emotive.Data.app = Emotive.Data.allApps[0];
+    }
 
-        var credential = DM.allCredentialsHash[DM.externalSystemName];
+    if (Emotive.Data.allExternalSystems.length == 0)
+    {
+        Emotive.Ui.Dialog.alertAndExit("The '" + Emotive.Data.externalSystemName + "' external system is not defined.");
+    }
+    else if (Emotive.Data.allExternalSystems.length > 1)
+    {
+        Emotive.Ui.Dialog.alertAndExit("There were " + Emotive.Data.allExternalSystems.length + " instances of the '" + Emotive.Data.externalSystemName + "' external system defined.");
+    }
+    else
+    {
+        Emotive.Data.externalSystem = Emotive.Data.allExternalSystems[0];
+
+        var credential = Emotive.Data.allCredentialsHash[Emotive.Data.externalSystemName];
 
         //
         //  There was no credential for this external system
@@ -126,8 +131,8 @@ function onRequestDataReady()
         if (credential == null)
         {
             credential = new Object();
-            credential.externalSystem = DM.externalSystemName;
-            credential.username = FW.getUsername();
+            credential.externalSystem = Emotive.Data.externalSystemName;
+            credential.username = Emotive.User.getName();
             credential.externalUsername = "";
             credential.externalPassword = "";
             credential.externalToken = "";
@@ -137,15 +142,15 @@ function onRequestDataReady()
 
         credential.hidePassword = true;
 
-        DM.set("DM.credential",credential);
+        Emotive.Data.set("Emotive.Data.credential",credential);
 
         hidePasswordChanged();
 
-        FW.cloneObject(credential);
+        Emotive.Js.Objects.clone(credential);
 
         updateValidationState();
 
-        FW.changePage("#MainPage");       
+        Emotive.App.changePage("#MainPage");       
     }
 }
 
@@ -172,23 +177,23 @@ function hidePasswordChanged()
 function updateValidationState()
 {
     $("#validationState").empty();
-    if (DM.credential.validationState == -2)
+    if (Emotive.Data.credential.validationState == -2)
     {
         $("#validationState").append('<span style="color:#ff0000">The current credentials have expired.</span>');
     }
-    else if (DM.credential.validationState == -20)
+    else if (Emotive.Data.credential.validationState == -20)
     {
         $("#validationState").append('<span style="color:#ff0000">Could not find target system.</span>');
     }
-    else if (DM.credential.validationState == -30)
+    else if (Emotive.Data.credential.validationState == -30)
     {
         $("#validationState").append('<span style="color:#ff0000">Unable to contact service.</span>');
     }
-    else if (DM.credential.validationState < 0)
+    else if (Emotive.Data.credential.validationState < 0)
     {
         $("#validationState").append('<span style="color:#ff0000">The current credentials are invalid.</span>');
     }
-    else if (DM.credential.validationState > 0)
+    else if (Emotive.Data.credential.validationState > 0)
     {
         $("#validationState").append('<span style="font-color:#000000">The current credentials are valid.</span>');
     }
@@ -204,31 +209,31 @@ function updateCredentials()
 {
     var obj;
 
-    FW.compareClone(DM.credential);
+    Emotive.Js.Objects.compareClones(Emotive.Data.credential);
 
-    if (DM.credential.ISMODIFIED)
+    if (Emotive.Data.credential.ISMODIFIED)
     {
-        DM.set("DM.credential.externalUsername",DM.credential.externalUsername.trim());
-        DM.set("DM.credential.externalPassword",DM.credential.externalPassword.trim());
-        DM.set("DM.credential.externalToken",DM.credential.externalToken.trim());
+        Emotive.Data.set("Emotive.Data.credential.externalUsername",Emotive.Data.credential.externalUsername.trim());
+        Emotive.Data.set("Emotive.Data.credential.externalPassword",Emotive.Data.credential.externalPassword.trim());
+        Emotive.Data.set("Emotive.Data.credential.externalToken",Emotive.Data.credential.externalToken.trim());
 
-        FW.cloneObject(DM.credential);
+        Emotive.Js.Objects.clone(Emotive.Data.credential);
 
-        if (DM.credential.externalUsername.length == 0)
+        if (Emotive.Data.credential.externalUsername.length == 0)
         {
-            FW.alert("Username may not be empty");
+            Emotive.Ui.Dialog.alert("Username may not be empty");
             return;
         }
 
-        if (DM.credential.externalPassword.length == 0)
+        if (Emotive.Data.credential.externalPassword.length == 0)
         {
-            FW.alert("Password may not be empty");
+            Emotive.Ui.Dialog.alert("Password may not be empty");
             return;
         }
 
-        if (DM.credential.externalToken.length == 0)
+        if (Emotive.Data.credential.externalToken.length == 0)
         {
-            FW.alert("Token may not be empty");
+            Emotive.Ui.Dialog.alert("Token may not be empty");
             return;
         }
 
@@ -237,12 +242,13 @@ function updateCredentials()
         obj.targetType = "CdmExternalSystem";
         obj.name = "updateExternalCredentials";
         obj.params = new Object();
-        obj.params.externalSystem = DM.credential.externalSystem;
-        obj.params.username = DM.credential.externalUsername;
-        obj.params.password = DM.credential.externalPassword;
-        obj.params.token = DM.credential.externalToken;
+        obj.params.externalSystem = Emotive.Data.credential.externalSystem;
+        obj.params.username = Emotive.Data.credential.externalUsername;
+        obj.params.password = Emotive.Data.credential.externalPassword;
+        obj.params.token = Emotive.Data.credential.externalToken;
 
-        FW.submitToServer(function(requestArray)
+        Emotive.Service.submit([new NonQueryRequestObject(obj)],
+        function(requestArray)
         {
             var restResponse = null;
 
@@ -256,42 +262,41 @@ function updateCredentials()
                 if (restResponse.status == "SUCCESS")
                 {
                     var cdmStatus = restResponse.results;
-                    DM.credential.validationState = cdmStatus.validationState;
+                    Emotive.Data.credential.validationState = cdmStatus.validationState;
 
                     updateValidationState();
 
                     //
                     //  The changes were saved, but they are known to be invalid
                     //
-                    if (DM.credential.validationState <= 0)
+                    if (Emotive.Data.credential.validationState <= 0)
                     {
 
-                        FW.alert("The credentials have been updated but are NOT valid.");
+                        Emotive.Ui.Dialog.alert("The credentials have been updated but are NOT valid.");
                     }
                     //
                     //  The changes were saved and are known to be valid.
                     //
                     else
                     {
-                        FW.alertAndExit("The credentials have been updated and are valid.",EXIT_APPLICATION_TO_CREDENTIAL_SETTINGS);
+                        Emotive.Ui.Dialog.alertAndExit("The credentials have been updated and are valid.",EXIT_APPLICATION_TO_CREDENTIAL_SETTINGS);
                     }
                 }
                 else
                 {
-                    FW.terminateOnRestResponseError(JSON.stringify(obj),restResponse,"Error in 'updateExternalCredentials'");
+                    Emotive.App.exitOnServiceError(JSON.stringify(obj),restResponse,"Error in 'updateExternalCredentials'");
                 }
             }
              else
             {
-                FW.terminateOnImpossible("No RestResponse returned from 'updateExternalCredentials'");
+                Emotive.App.exitOnApplicationError("No RestResponse returned from 'updateExternalCredentials'");
             }
 
-        },
-        [new NonQueryRequestObject(obj)]);
+        });
     }
     else
     {
-        FW.alert("No credentials were changed");
+        Emotive.Ui.Dialog.alert("No credentials were changed");
     }
 
 }
