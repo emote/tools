@@ -6,6 +6,9 @@
   "homepage": "http://www.emotive.com",
   "preferGlobal": "true",
   "bin": { "emote": "index.js" },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
   "dependencies": {
     "optimist":">=0.3.4",
     "npm":">=1.1.32",
