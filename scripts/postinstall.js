@@ -3,7 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var dir = __dirname;
+var dir = path.normalize(__dirname + path.sep + "..");
 if (dir.indexOf('\\') >= 0) {
     var pwdarr = dir.split('\\');
     pwdarr.forEach(function(row, index) {
@@ -22,7 +22,7 @@ console.log();
 console.log("------------------------------------------------------------------------------");
 console.log("To enable bash command completion for emote, add the line:");
 console.log();
-console.log("    . " + dir + "/emote-completion");
+console.log("    . " + dir + "/scripts/emote-completion");
 console.log();
 console.log("to your .profile");
 console.log("------------------------------------------------------------------------------");
