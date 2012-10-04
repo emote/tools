@@ -204,7 +204,7 @@ The add command is like the create command, but it just pulls the specified part
 
 Example:
 
-    emote add theme default --template branding
+    emote add branding theme default
 
 This take the default "theme" from the "branding" template and adds it to your project.
 
