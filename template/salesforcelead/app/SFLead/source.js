@@ -9,7 +9,7 @@ var currentLocObject = null;
 function CDF_Ready()
 {
     //
-    //  Declare whether or no this application would benefit from data caching
+    //  Declare whether or not this application would benefit from data caching
     //
     FW.allowDataCaching = true;
 
