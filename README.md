@@ -317,6 +317,22 @@ emote generateFromWsdl subproject
 This will generate a SOAP-service-based subproject.  Before running this, you must use the getWsdl command to load WSDL-based
 definitions into your subproject.
 
+## undeploy
+
+emote undeploy theme [themeName]
+
+This will undeploy the theme with the supplied name (defaults to "default" if themeName is omitted).
+
+emote undeploy app taskletId
+
+This will undeploy the application with the supplied taskletId (which is the unique identifier by which an application
+known).
+
+Example:
+
+    emote undeploy app ec-HelloWorld
+
+
 # Running standalone tests for a proxy
 
 A project template may generate tests. These will be a in test directory under your project. If you modify proxy code,
