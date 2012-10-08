@@ -12,10 +12,6 @@ function _emote()
         add)
             _emote_add
             ;;
-        clean)
-            ;;
-        cleanAll)
-            ;;
         create)
             _emote_create
             ;;
@@ -54,7 +50,7 @@ function _emote_top()
 {
     local cmds cur
     cur="${COMP_WORDS[1]}"
-    cmds=("add clean cleanAll create deploy download exec generateFromWsdl getWsdl help log templates test undeploy")
+    cmds=("add create deploy download exec generateFromWsdl getWsdl help log templates test undeploy")
     COMPREPLY=($(compgen -W "${cmds}" -- ${cur}) )
 }
 
@@ -188,7 +184,7 @@ function _emote_undeploy()
         if [ $COMP_CWORD -eq 2 ]
         then
             word="${COMP_WORDS[2]}"
-            matches="theme"
+            matches="theme app model"
         elif [ $COMP_CWORD -eq 3 ]
         then
             parent="$projdir/${COMP_WORDS[2]}"
