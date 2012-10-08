@@ -198,6 +198,22 @@ Will deploy the "usgs" proxy that was generated into your project.
 Note that until a project has been deployed, the MMS cloud service (at mms.emotive.com) has no knowledge of the project.
 By deploying the generated project, the app is made available to users.
 
+## undeploy
+
+This removes objects that have been deployed. E.g.
+
+  emote undeploy app <app_id>
+
+Removes the app identifies by <app_id>.
+
+Undeploy is currently implemented only for app, model, and theme.
+
+Undeploying a model, e.g.
+
+  emote undeploy model
+
+Removes the CdmExternalSystem definitions for the tenant and all bindings to those external systems. It does not remove any CdmType's that were part of the model, but those types will no longer be bound to an external system.
+
 ## add
 
 The add command is like the create command, but it just pulls the specified part of a given template and adds it to your project.
@@ -247,12 +263,6 @@ Show the log data for a certain date from 9 to 10 am in the local time zone, out
 
     emote log "2012-09-13 09:00:00" "2012-09-13 10:00:00" --csv
 
-
-## cleanAll
-
-emote cleanAll
-
-This removes all models from your emotive tenant.
 
 ## download
 
