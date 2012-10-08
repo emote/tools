@@ -26,13 +26,13 @@ You can install a tagged version:
 
     $ npm install -g https://github.com/emote/tools/tarball/v1.0.9
 
-Or just install the latest:
+Or just install the latest version for development:
 
-    $ npm install -g https://github.com/emote/tools/tarball/master
+    $ npm install -g https://github.com/emote/tools/tarball/dev
 
 Note that you may have to use "sudo" to install with '-g':
 
-    $ sudo npm install -g https://github.com/emote/tools/tarball/master
+    $ sudo npm install -g https://github.com/emote/tools/tarball/dev
 
 ### Installing from a local tar file:
 
@@ -252,9 +252,7 @@ Show the log data for a certain date from 9 to 10 am in the local time zone, out
 
 emote cleanAll
 
-This removes all models, proxies and apps from your emotive tenant.
-
-You can run this after using "deploy" to set your account make to it initial state, with no deployed apps.
+This removes all models from your emotive tenant.
 
 ## download
 
