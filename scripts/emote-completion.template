@@ -184,7 +184,7 @@ function _emote_undeploy()
         if [ $COMP_CWORD -eq 2 ]
         then
             word="${COMP_WORDS[2]}"
-            matches="theme app model"
+            matches="app model operation theme"
         elif [ $COMP_CWORD -eq 3 ]
         then
             parent="$projdir/${COMP_WORDS[2]}"
@@ -201,7 +201,7 @@ function _emote_undeploy()
 # arguments:
 # 1: the parent directory
 #
-# returns the subdirecties that are not hidden
+# returns the subdirectories that are not hidden
 function _emote_subdirs
 {
     local children child fullpath matches
