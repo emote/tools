@@ -2,13 +2,12 @@
   "author": "Mark Wallace <mark@emotive.com>",
   "name": "emote",
   "description": "Emotive command line tool",
-  "version": "1.0.25",
+  "version": "1.0.24",
   "homepage": "http://www.emotive.com",
   "preferGlobal": "true",
   "bin": { "emote": "index.js" },
   "scripts": {
-    "postinstall": "node scripts/postinstall.js",
-    "test": "node test/startRegressionTest.js"
+    "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
     "optimist":">=0.3.4",
