@@ -1,3 +1,4 @@
+export EMOTE_HOME=/usr/local/lib/node_modules/emote
 complete -F _emote emote
 
 function _emote()
@@ -234,6 +235,11 @@ function _emote_find_project()
 {
     local projectDir
     projectDir="$(pwd)"
+    if ( echo $projectDir | egrep -q ' |'$'\t' )
+    then
+        echo ""
+        return
+    fi
     while [ ! -r $projectDir/project.json ]
     do
         if [ $projectDir = "/" ]
