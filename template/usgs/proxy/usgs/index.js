@@ -17,7 +17,7 @@ emproxy.init(function afterInitCallback(initialConfig) {
 // http://earthquake.usgs.gov/earthquakes/feed/geojson/2.5/month
 
 function processDirective(restRequest,callback) {
-    if (restRequest.op == "INVOKE" && restRequest.name == "login") {
+    if (restRequest.op == "INVOKE" && restRequest.targetType === "CdmExternalCredentials" && restRequest.name == "validate") {
         // This will be called only if delegated authorization is enabled
         // We will accept all requests where the password is the same as the username converted to uppercase
         var ok = false;
@@ -29,7 +29,19 @@ function processDirective(restRequest,callback) {
             return callback(null, { status:"SUCCESS" } );
         }
         else {
-            return callback(new Error("Invalid credentials"));
+            var restResult = {
+                targetType : 'RestResult',
+                status : 'ERROR',
+                errors:
+                    [
+                        {
+                            targetType:'CdmError',
+                            errorCode: 'integration.login.fail',
+                            errorMessage: 'The supplied credentials are invalid.'
+                        }
+                    ]
+            };
+            return callback(null, restResult);
         }
     }
     else if(restRequest.targetType != 'Feature') {
