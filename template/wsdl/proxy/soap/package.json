@@ -6,7 +6,7 @@
     "homepage": "http://www.emotive.com",
     "dependencies": {
         "emproxy"   : "https://github.com/emote/emproxy/tarball/v1.0.5",
-        "emsoap"    : "https://github.com/emote/emsoap/tarball/v1.0.4",
+        "emsoap"    : "https://github.com/emote/emsoap/tarball/v1.0.5",
         "emutils"   : "https://github.com/emote/emutils/tarball/v1.0.2",
         "emxml2js"  : "https://github.com/emote/emxml2js/tarball/v0.1.14"
     },
