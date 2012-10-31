@@ -1,5 +1,5 @@
 var util = require('util');
-var genericproxy = require('genericproxy');
+var genericproxy = require('emproxy');
 
 var types = substitute0/* JSON.stringify(subject.types, null, '\t') */;
 
