@@ -17,7 +17,34 @@ emproxy.init(function afterInitCallback(initialConfig) {
 // http://earthquake.usgs.gov/earthquakes/feed/geojson/2.5/month
 
 function processDirective(restRequest,callback) {
-    if(restRequest.targetType != 'Feature') {
+    if (restRequest.op == "INVOKE" && restRequest.targetType === "CdmExternalCredentials" && restRequest.name == "validate") {
+        // This will be called only if delegated authorization is enabled
+        // We will accept all requests where the password is the same as the username converted to uppercase
+        var ok = false;
+        var creds = restRequest.options.credentials;
+        if (creds && creds.username) {
+            ok = creds.password == creds.username.toUpperCase();
+        }
+        if (ok) {
+            return callback(null, { status:"SUCCESS" } );
+        }
+        else {
+            var restResult = {
+                targetType : 'RestResult',
+                status : 'ERROR',
+                errors:
+                    [
+                        {
+                            targetType:'CdmError',
+                            errorCode: 'integration.login.fail',
+                            errorMessage: 'The supplied credentials are invalid.'
+                        }
+                    ]
+            };
+            return callback(null, restResult);
+        }
+    }
+    else if(restRequest.targetType != 'Feature') {
         console.log('USGS Proxy only returns Feature objects, unknown type requested: ' + restRequest.targetType)
     }
 
