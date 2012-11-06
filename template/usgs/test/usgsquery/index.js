@@ -2,7 +2,7 @@ var util = require('util');
 
 var session;
 
-module.exports = function main(sessionParam,cb) {
+module.exports = function(sessionParam,cb) {
     session = sessionParam;
 
     session.directive({
