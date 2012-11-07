@@ -5,7 +5,7 @@
     "version": "1.0.2",
     "homepage": "http://www.emotive.com",
     "dependencies": {
-        "emsfdc" : "1.0.4",
+        "emsfdc" : "https://github.com/emote/emsfdc/tarball/v1.0.4",
         "emproxy" : "1.0.x"
     },
     "devDependencies": {},
