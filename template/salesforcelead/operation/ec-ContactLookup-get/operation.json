@@ -1,4 +1,5 @@
 {
     "name": "ec-ContactLookup-Get",
-    "type": "ec-ContactLookup-Type"
+    "type": "ec-ContactLookup-Type",
+    "returns": ["User","Account","Contact"]
 }

@@ -15,7 +15,7 @@ function CDF_Ready()
 
     var requestedQueries = new Array();
     requestedQueries.push(new DeclareDataValueObject("Emotive.Data.lead","Lead"));
-    requestedQueries.push(new QueryRequestObject({op:'SELECT', targetType:'Lead'},"Emotive.Data.allLeads","Emotive.Data.allLeadsHash",{extraHashKey:"externalId"}));
+    requestedQueries.push(new QueryRequestObject({op:'SELECT', targetType:'Lead'},"Emotive.Data.allLeads","Emotive.Data.allLeadsHash"));
     Emotive.Service.submit(requestedQueries, onRequestDataReady);
 
     //
