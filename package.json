@@ -10,6 +10,7 @@
     "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
+    "request":"2.12.x",
     "optimist":"0.3.x",
     "npm":"1.1.x",
     "crc32":"0.2.x",
