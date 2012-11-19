@@ -81,6 +81,18 @@ function processDirective(restRequest,callback) {
 }
 
 function callSoapOperation(input, op, callback) {
+    if (op.inputParams) {
+        for (var name in input) {
+            var param = op.inputParams[name];
+            if (param && param.parentName) {
+                if (!input[param.parentName]) {
+                    input[param.parentName] = {}
+                }
+                input[param.parentName][name] = input[name];
+                delete input[name];
+            }
+        }
+    }
     callSoap(input, httpOptions, op.requestDesc,
         op.deserializationOptions, op.responseDesc, callback);
 }
