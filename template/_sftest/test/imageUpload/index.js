@@ -124,15 +124,20 @@ function select2(err,res) {
         targetType:"Contact", 
         properties:["id","LastName","AssistantName","Birthdate"],
         where: {Name:uniqueName}
-    },select3);
+    },wait3);
 }
 
-function select3(err,res) {
+function wait3(err,res) {
     if(res.results.length != 1) {
         console.dir(res);
         console.log("TEST FAILED!");
         process.exit(1);
     }
+    console.log('waiting...');
+    setTimeout(select3,2000);
+}
+
+function select3(err,res) {
     session.directive({
         op: "SELECT", 
         targetType:"Document", 
@@ -141,12 +146,12 @@ function select3(err,res) {
 }
 
 function done(err,res) {
-    var selectedName = res.results[0].Name;
-    if(selectedName === uniqueName) {
+    if(res && res.results && res.results[0] && res.results[0].Name === uniqueName) {
         console.log("TEST PASSED!");
         process.exit(0);
     } else {
-        console.log(selectedName + " != " + uniqueName);
+        console.dir(res);
+        console.log("\nres.results[0].Name != " + uniqueName);
         console.log("TEST FAILED!");
         process.exit(1);
     }
