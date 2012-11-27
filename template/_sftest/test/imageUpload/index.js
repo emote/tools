@@ -84,7 +84,7 @@ function insert1() {
 function wait1(err,res) {
     //console.dir(res);
     console.log('waiting...');
-    setTimeout(select1,3000);
+    setTimeout(select1,5000);
 }
 
 function select1(res) {
@@ -97,18 +97,23 @@ function select1(res) {
 }
 
 function update1(err,res) {
-    //console.dir(res);
-    var id = res.results[0].id;
-    // console.log('Updating Media field of row with id='+id);
+    if(res && res.results && res.results[0] && res.results[0].id) {
+        var id = res.results[0].id;
+        session.directive({
+            op:'UPDATE',
+            targetType: 'Contact', 
+            values: {
+                AssistantName: resourceName,
+            },
+            where : {id: id}
+        },wait2);
+    } else {
+        console.dir(res);
+        console.log("\nres.results[0].id is not present!");
+        console.log("TEST FAILED!");
+        process.exit(1);
+    }
 
-    session.directive({
-        op:'UPDATE',
-        targetType: 'Contact', 
-        values: {
-            AssistantName: resourceName,
-        },
-        where : {id: id}
-    },wait2);
 }
 
 function wait2(err,res) {
