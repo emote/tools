@@ -83,7 +83,7 @@ function insert1() {
 
 function wait1(err,res) {
     //console.dir(res);
-    console.log('waiting...');
+    console.log('wait1...');
     setTimeout(select1,5000);
 }
 
@@ -92,7 +92,7 @@ function select1(res) {
         op: "SELECT", 
         targetType:"Contact", 
         properties:["id","LastName","AssistantName","Birthdate"],
-        where: {Name:uniqueName}
+        where: {LastName:uniqueName}
     },update1);
 }
 
@@ -118,7 +118,7 @@ function update1(err,res) {
 
 function wait2(err,res) {
     //console.dir(res);
-    console.log('waiting...');
+    console.log('wait2...');
     setTimeout(select2,2000);
 }
 
@@ -128,7 +128,7 @@ function select2(err,res) {
         op: "SELECT", 
         targetType:"Contact", 
         properties:["id","LastName","AssistantName","Birthdate"],
-        where: {Name:uniqueName}
+        where: {LastName:uniqueName}
     },wait3);
 }
 
@@ -138,7 +138,8 @@ function wait3(err,res) {
         console.log("TEST FAILED!");
         process.exit(1);
     }
-    console.log('waiting...');
+    console.dir(res);
+    console.log('wait3...');
     setTimeout(select3,2000);
 }
 

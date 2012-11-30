@@ -1,4 +1,5 @@
 {
+    "_verbose_logging_": false,
     "Contact":    {
         "target":    "Contact",
         "properties":{
