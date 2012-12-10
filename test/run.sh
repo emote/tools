@@ -1,10 +1,14 @@
 echo "starting test"
-emote create myproj --template usgs
+emote create myproj
 cd myproj
+emote add usgs
+emote build
 emote deploy --profile ../profile.json
 emote test --profile ../profile.json
 cd ..
-emote create sfproj --template _sftest
+emote create sfproj
 cd sfproj
+emote add _sftest
+emote build
 emote deploy --profile ../profile.json
 emote test --profile ../profile.json
