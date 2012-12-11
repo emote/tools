@@ -18,6 +18,10 @@
 			"externallySourced": true,
 			"propertySet": [
 				{
+					"name": "id$",
+					"type": "String"
+				},
+				{
 					"name": "mag",
 					"type": "String"
 				},

@@ -9,16 +9,23 @@ module.exports = function(sessionParam,cb) {
         op: 'SELECT',
         targetType: 'Feature'
     },function(err,res) {
-        if(!err) {
-            if(!res || !res.results) {
-                err = new Error('SELECT of Feature returned unexpected reply: ' + res);
-            } else if(res.results.length === 0) {
-                err = new Error('SELECT of Feature returned no results');
-            } else if(!res.results[0].mag) {
-                err = new Error('SELECT of Feature result without a magnitude: ' + util.inspect(res.results[0],false,null));
-            }
+        if(err) {
+            console.log('Synchronous query of Feature FAILED with error:' + err);
+            return cb(err);
+        }
+        if(!res || !res.results) {
+            err = new Error('SELECT of Feature returned unexpected reply: ' + res);
+        } else if(res.results.length === 0) {
+            err = new Error('SELECT of Feature returned no results');
+        } else if(!res.results[0].mag) {
+            err = new Error('SELECT of Feature result without a magnitude: ' + util.inspect(res.results[0],false,null));
         } else {
             console.log('Synchronous query of Feature succeeded.');
+        }
+
+        if(err) {
+            console.log('Synchronous query of Feature FAILED with error:' + err);
+            return cb(err);
         }
 
         session.directive({
@@ -26,19 +33,27 @@ module.exports = function(sessionParam,cb) {
             targetType: 'Feature',
             options: {"async":true}
         },function(err,res) {
-            if(!err) {
-                if(!res || !res.results) {
-                    err = new Error('SELECT of Feature returned unexpected reply: ' + res);
-                } else if(res.results.length === 0) {
-                    err = new Error('SELECT of Feature returned no results');
-                } else if(!res.results[0].mag) {
-                    err = new Error('SELECT of Feature result without a magnitude: ' + util.inspect(res.results[0],false,null));
-                }
+            if(err) {
+                console.log('Asynchronous query of Feature FAILED with error:' + err);
+                return cb(err);
+            }
+
+            if(!res || !res.results) {
+                err = new Error('SELECT of Feature returned unexpected reply: ' + res);
+            } else if(res.results.length === 0) {
+                err = new Error('SELECT of Feature returned no results');
+            } else if(!res.results[0].mag) {
+                err = new Error('SELECT of Feature result without a magnitude: ' + util.inspect(res.results[0],false,null));
             } else {
                 console.log('Asynchronous query of Feature succeeded.');
             }
 
-            cb(err);
+            if(err) {
+                console.log('Asynchronous query of Feature FAILED with error:' + err);
+                return cb(err);
+            }
+
+            cb();
         });
     });
 }

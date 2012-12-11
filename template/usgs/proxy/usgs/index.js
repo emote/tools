@@ -113,7 +113,7 @@ function convertGeoJSON(input) {
 
     features.every(function(feature) {
         var row = feature.properties;
-        row.id = feature.id;
+        row.id$ = feature.id;
         var coords = feature.geometry.coordinates;
         row.longitude = coords[0];
         row.latitude = coords[1];
