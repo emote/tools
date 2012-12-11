@@ -117,7 +117,7 @@ function update1(err,res) {
 }
 
 function wait2(err,res) {
-    //console.dir(res);
+    console.dir(res);
     console.log('wait2...');
     setTimeout(select2,2000);
 }
@@ -152,15 +152,18 @@ function select3(err,res) {
 }
 
 function done(err,res) {
-    if(res && res.results && res.results[0] && res.results[0].Name === uniqueName) {
-        console.log("TEST PASSED!");
-        process.exit(0);
-    } else {
-        console.dir(res);
-        console.log("\nres.results[0].Name != " + uniqueName);
-        console.log("TEST FAILED!");
-        process.exit(1);
-    }
+    if(res && res.results) {
+        res.results.forEach(function(row) {
+            if(row.Name === uniqueName) {
+                console.log("TEST PASSED!");
+                process.exit(0);
+            }
+        });
+     }
+    console.dir(res);
+    console.log(uniqueName + " not found!");
+    console.log("TEST FAILED!");
+    process.exit(1);
 }
 
 
