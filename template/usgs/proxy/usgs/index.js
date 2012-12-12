@@ -114,6 +114,7 @@ function convertGeoJSON(input) {
     features.every(function(feature) {
         var row = feature.properties;
         row.id$ = feature.id;
+        row.externalId = feature.id;
         var coords = feature.geometry.coordinates;
         row.longitude = coords[0];
         row.latitude = coords[1];
