@@ -1,7 +1,7 @@
 {
     "author": "Emotive generated SOAP proxy",
-    "name": "/*insert: subject.target */",
-    "description": "/*insert: subject.name */ package",
+    "name": "SOAPProxy",
+    "description": "SOAP proxy",
     "version": "1.0.3",
     "homepage": "http://www.emotive.com",
     "dependencies": {
