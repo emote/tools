@@ -1,0 +1,34 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '-g', '.' ]
+2 info using npm@1.1.36
+3 info using node@v0.8.3
+4 verbose config file /Users/mwallace/.npmrc
+5 verbose config file /usr/local/etc/npmrc
+6 verbose config file /usr/local/lib/node_modules/npm/npmrc
+7 verbose read json /usr/local/lib/package.json
+8 verbose read json /usr/local/lib/package.json
+9 verbose cache add [ '.', null ]
+10 silly cache add name=undefined spec="." args=[".",null]
+11 verbose parsed url { pathname: '.', path: '.', href: '.' }
+12 silly lockFile 3a52ce78- .
+13 verbose lock . /Users/mwallace/.npm/3a52ce78-.lock
+14 verbose read json package.json
+15 silly lockFile 3a52ce78- .
+16 error addLocal Could not install .
+17 error Error: ENOENT, open 'package.json'
+17 error  { [Error: ENOENT, open 'package.json'] errno: 34, code: 'ENOENT', path: 'package.json' }
+18 error You may report this log at:
+18 error     <http://github.com/isaacs/npm/issues>
+18 error or email it to:
+18 error     <npm-@googlegroups.com>
+19 error System Darwin 11.4.2
+20 error command "node" "/usr/local/bin/npm" "install" "-g" "."
+21 error cwd /Users/mwallace/Documents/workspace/tools/template/usgs/test
+22 error node -v v0.8.3
+23 error npm -v 1.1.36
+24 error path package.json
+25 error code ENOENT
+26 error message ENOENT, open 'package.json'
+27 error errno 34
+28 error 34 errno
+29 verbose exit [ 34, true ]
