@@ -5,8 +5,8 @@
 	"version": "1.1.2",
 	"homepage": "http://www.emotive.com",
 	"dependencies": {
-		"emsfdc": "~1.1.6",
-		"emproxy": "~1.0.7"
+		"emsfdc": "~1.1.7",
+		"emproxy": "~1.0.8"
 	},
 	"devDependencies": {},
 	"optionalDependencies": {},
