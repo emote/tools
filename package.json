@@ -2,7 +2,7 @@
   "author": "Mark Wallace <mark@emotive.com>",
   "name": "emote",
   "description": "Emotive command line tool",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "homepage": "http://www.emotive.com",
   "preferGlobal": "true",
   "bin": { "emote": "index.js" },
@@ -27,7 +27,9 @@
     "rimraf":"2.0.x",
     "xml2js":"0.1.14"
   },
-  "devDependencies": {},
+  "devDependencies": {
+      "emotetests": "~2.0.0"
+  },
   "optionalDependencies": {},
   "license" : "MIT/X11",
   "engines": {
