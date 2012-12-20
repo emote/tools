@@ -169,23 +169,62 @@ The Salesforce template for the model creates a "salesforce.json" file that cont
 
 ## add
 
-    emote add proxy myprox1 --template Salesforce
+    emote add {module type} {module name} --template {template name}
+
+{module type} must be one of: model proxy app operation test theme, 
+
+Or any combination joined by + (e.g. model+proxy). 'all' is equivalent to the whole list joined by +.
+
+{module name} the name of the module, will be the directory name under the {module type} directory. For models and proxies, this will be the same as the "externalSystem" name in the CDM.
+
+--template is optional. If it is included, content from the named template (e.g. Salesforce) will be included in the module.
 
 ## create
 
-    emote create <project_name>
+    emote create {project name}
 
-Create a new Emotive project in the current directory. <project_name> is the name is the directory created. Subdirectories
-for a model, apps, and proxies are created.
+Create a new Emotive project in the current directory. {project name} is the name is the directory created. Subdirectories: model, app, proxy are created. 
+
+project.json is created.
+
+profile.json is created with default values that cause emote to prompt for credentials. (See profile.json above.)
+
+## download
+
+    emote download {app or sample} {identifier}
+
+This command will download a previously deployed artifact from the MMS cloud service and save as files in your project
+directory. Currently thus is only implemented for apps and samples. 
+
+For apps, the command is:
+
+    emote download app {app id}
+
+Example:
+
+    emote download app usgs
+
+Will download the app with ID "usgs" from you tentant and add it to your current project. Note that your current project
+is based on your current directory.
+
+For samples, the command is:
+
+    emote download sample {sample name}
+
+Where the sample name can be obtained by using:
+
+    emote list samples
 
 
 ## deploy
 
-    emote deploy <optional_parameters>
+    emote deploy {module type} {module name}
 
-The "deploy" command works within any subdirectory of a project. With no parameters, "deploy" will deploy the model,
-the proxies, and all the apps from the project directory. In order to limit the deployment, add a parameter of "model",
-"proxy", or "app". "proxy" will deploy all the proxies, unless it is further limited by providing a proxy name.
+The "deploy" command works within any subdirectory of a project. With no parameters, "deploy" will deploy the model.
+
+{module type} is optional. It limits the deploy to just that directory.
+
+{module name} is optional, but can only be included if preceded by {module type}. It limits the deploy to just that module.
 
 Example:
 
@@ -198,23 +237,29 @@ By deploying the generated project, the app is made available to users.
 
 ## undeploy
 
+    emote undeploy {module type} {identifier}
+
 This removes objects that have been deployed. E.g.
 
-  emote undeploy app <app_id>
+    emote undeploy app {app id}
 
-Removes the app identifies by <app_id>.
+Removes the app identified by {app id}.
 
 Undeploy is currently implemented only for app, model, and theme.
 
 Undeploying a model, e.g.
 
-  emote undeploy model
+    emote undeploy model
 
 Removes the CdmExternalSystem definitions for the tenant and all bindings to those external systems. It does not remove any CdmType's that were part of the model, but those types will no longer be bound to an external system.
 
+    emote undeploy theme {theme name}
+
+This will undeploy the theme with the supplied name (defaults to "default" if themeName is omitted).
+
 ## log
 
-    emote log <start time> <end time> [--tail] [--local] [--csv]
+    emote log {start time} {end time} [--tail] [--local] [--csv]
 
 This displays the log file for your proxy running on the MMS server. The "start time" indicates the stamp of the
 earliest message to show. It can be specified in several formats.
@@ -252,21 +297,9 @@ Show the log data for a certain date from 9 to 10 am in the local time zone, out
     emote log "2012-09-13 09:00:00" "2012-09-13 10:00:00" --csv
 
 
-## download
-
-This command will download a previously deployed artifact from the MMS cloud service and save as files in your project
-directory. Currently thus is only implemented for apps. The form of the command is:
-
-    emote download app <appId>
-
-Example:
-
-    emote download app usgs
-
-Will download the app with ID "usgs" from you tentant and add it to your current project. Note that your current project
-is based on your current directory.
-
 ## exec
+
+    emote exec {command file .json}
 
 This takes a parameter which is the name of a file containing JSON for an Array of MMS REST requests. It submits the
 requests to MMS synchronously, as a series, and logs the REST responses to stdout.
@@ -315,20 +348,6 @@ emote generateFromWsdl subproject
 This will generate a SOAP-service-based subproject.  Before running this, you must use the getWsdl command to load WSDL-based
 definitions into your subproject.
 
-## undeploy
-
-emote undeploy theme [themeName]
-
-This will undeploy the theme with the supplied name (defaults to "default" if themeName is omitted).
-
-emote undeploy app taskletId
-
-This will undeploy the application with the supplied taskletId (which is the unique identifier by which an application
-known).
-
-Example:
-
-    emote undeploy app ec-HelloWorld
 
 
 # Credentials
@@ -374,82 +393,3 @@ Starting with the lowest precedence, each source of credential described above o
 4. .emote_profile
 
 Individual values are overridden, so "username" may be taken from one profile, while "server" is defined in another. Properties in "externalCredentials" are merged by name.
-
-# Running standalone tests for a proxy
-
-A project template may generate tests. These will be a in test directory under your project. If you modify proxy code,
-it is helpful to run a standalone test of the proxy to make sure it works before deploying it. This is all done with
-node.js from the command line, and you should feel free to read and modify the code for both the proxy and the test.
-
-In order to run the test, you must first start your proxy in standalone mode. Example:
-
-    $ pwd
-    /Users/mwallace/myproject
-    $ echo "{}" | node proxy/usgs/index.js
-    port: 9000
-    Server listening at URL http://localhost:9000
-    Will exit after 300000ms idle time.
-
-
-This starts the proxy in a terminal window. Note that "echo" is used to pass an initial configuration to the proxy,
-which is a empty object in this case. This provides the configuration that the proxy will get from MMS when it
-started within the MMS cloud service. The proxy will time out and automatically shut down after it has received no
-requests for five minutes. You can restart or terminate the standalone proxy at any time.
-
-Now in another terminal, run the test. You must include the URL at which the proxy is running as a parameter:
-
-Example:
-
-    $ node test/index.js http://localhost:9000
-    893 results returned. Truncating to show the first two.
-    test response is: { targetType: 'RestResult',
-      status: 'SUCCESS',
-      count: 893,
-      results:
-       [ { mag: 1,
-           place: '21km N of Borrego Springs, California',
-           time: 1344457079,
-           tz: -420,
-           url: '/earthquakes/eventpage/ci15189473',
-           felt: null,
-           cdi: null,
-           mmi: null,
-           alert: null,
-           status: 'AUTOMATIC',
-           tsunami: null,
-           sig: '15',
-           net: 'ci',
-           code: '15189473',
-           ids: ',ci15189473,',
-           sources: ',ci,',
-           types: ',general-link,general-link,geoserve,nearby-cities,origin,scitech-link,',
-           id: 'ci15189473',
-           longitude: -116.3642,
-           latitude: 33.4518,
-           depth: 8.6 },
-         { mag: 1.1,
-           place: '6km W of Cobb, California',
-           time: 1344456943,
-           tz: -420,
-           url: '/earthquakes/eventpage/nc71828581',
-           felt: null,
-           cdi: null,
-           mmi: null,
-           alert: null,
-           status: 'AUTOMATIC',
-           tsunami: null,
-           sig: '19',
-           net: 'nc',
-           code: '71828581',
-           ids: ',nc71828581,',
-           sources: ',nc,',
-           types: ',general-link,general-link,geoserve,nearby-cities,origin,',
-           id: 'nc71828581',
-           longitude: -122.7953,
-           latitude: 38.8262,
-           depth: 3.3 } ] }
-    Tests completed.
-    $
-
-This confirms that the example proxy is successfully fetching earthquake data from the USGS feed.
-
