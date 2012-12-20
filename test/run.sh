@@ -20,15 +20,15 @@ echo "starting test"
 jettypid=$(runJetty)
 emote create weather
 cd weather
-emote getWsdl weather 'http://wsf.cdyne.com/WeatherWS/Weather.asmx?WSDL' Weather WeatherSoap
+emote getWsdl weather 'http://wsf.cdyne.com/WeatherWS/Weather.asmx?WSDL' Weather WeatherSoap --profile ../profile.json
 sed 's/false/true/' model/weather/wsdlOps.json > wsdlOps.json.new
 mv wsdlOps.json.new model/weather/wsdlOps.json
-emote generateFromWsdl weather
+emote generateFromWsdl weather  --profile ../profile.json
 emote build
-emote deploy
+emote deploy --profile ../profile.json
 mkdir -p test/default
 cp $testsdir/test/index.js test/default
-emote test
+emote test --profile ../profile.json
 kill -9 $jettypid
 cd ..
 
