@@ -19,16 +19,8 @@
             "MailingPostalCode":true,
             "Phone":            true,
             "IsDeleted":        true,
-            "AssistantName":	{"type":"Media"},
+            "AssistantName":	true,
             "Birthdate":		true
         }
-    },
-	"Document": {
-		"target": "Document",
-		"properties": {
-			"Name": true,
-			"Body": true,
-			"ContentType": true
-		}
-	}
+    }
 }
