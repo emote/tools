@@ -100,34 +100,34 @@ With this profile.json, it will only prompt for the password, which saves some t
 
 The deploy command uploads your app, model, and proxy code to MMS.
 
-$ emote deploy --profile ~/test.json
-emote 2.0.9
-Connecting to MMS as user mark@emotive.com at http://test.mms.emotive.com
-npm http GET https://registry.npmjs.org/request
-npm http GET https://registry.npmjs.org/emproxy
-npm http 304 https://registry.npmjs.org/emproxy
-npm http 304 https://registry.npmjs.org/request
-npm http GET https://registry.npmjs.org/emutils
-npm http GET https://registry.npmjs.org/portfinder/0.2.1
-npm http 304 https://registry.npmjs.org/emutils
-npm http 304 https://registry.npmjs.org/portfinder/0.2.1
-npm http GET https://registry.npmjs.org/mkdirp
-npm http 304 https://registry.npmjs.org/mkdirp
-usgs@1.0.0 node_modules/usgs
-├── request@2.9.203
-└── emproxy@1.0.8 (emutils@1.0.6, portfinder@0.2.1)
-Exec'ing query file: model.json
-CREATED CdmExternalSystem: usgs
-Inserted CdmTypeBinding: Feature
-Completed binding of CDM type: Feature
-Finished executing directives.
-Deployed model usgs
-Uploading resource: usgs of length 120377
-Deployed proxy usgs
-Uploading app: usgs of length 64973
-App usgs added
-Deployed app usgs
-$ 
+    $ emote deploy --profile ~/test.json
+    emote 2.0.9
+    Connecting to MMS as user mark@emotive.com at http://test.mms.emotive.com
+    npm http GET https://registry.npmjs.org/request
+    npm http GET https://registry.npmjs.org/emproxy
+    npm http 304 https://registry.npmjs.org/emproxy
+    npm http 304 https://registry.npmjs.org/request
+    npm http GET https://registry.npmjs.org/emutils
+    npm http GET https://registry.npmjs.org/portfinder/0.2.1
+    npm http 304 https://registry.npmjs.org/emutils
+    npm http 304 https://registry.npmjs.org/portfinder/0.2.1
+    npm http GET https://registry.npmjs.org/mkdirp
+    npm http 304 https://registry.npmjs.org/mkdirp
+    usgs@1.0.0 node_modules/usgs
+    ├── request@2.9.203
+    └── emproxy@1.0.8 (emutils@1.0.6, portfinder@0.2.1)
+    Exec'ing query file: model.json
+    CREATED CdmExternalSystem: usgs
+    Inserted CdmTypeBinding: Feature
+    Completed binding of CDM type: Feature
+    Finished executing directives.
+    Deployed model usgs
+    Uploading resource: usgs of length 120377
+    Deployed proxy usgs
+    Uploading app: usgs of length 64973
+    App usgs added
+    Deployed app usgs
+    $ 
 
 Note from the example output that deploy has several intermediate steps. First it does a "build" to make sure that the proxies have been installed using npm. The npm install will cause any dependencies to be pull into the staging area. After that, it deploys the model, the proxy, and the app for the USGS sample by uploading them to http://test.mms.emotive.com.
 
@@ -164,46 +164,11 @@ The Salesforce template for the model creates a "salesforce.json" file that cont
 
 ## create
 
-    emote create <project_name> --template <template_name> --model <model_file.json>
+    emote create <project_name>
 
 Create a new Emotive project in the current directory. <project_name> is the name is the directory created. Subdirectories
-for a model, apps, and proxies are created. If a template is provided, then an initial app is generated based on that
-template. Otherwise the "default" template is used. Some templates, including the "default" template require a model
-to be provided in JSON format.
+for a model, apps, and proxies are created.
 
-Example:
-
-    emote create myproject --template usgs
-
-This uses the "usgs" template to generate an app based on the US Geological Survey earthquake database. A model, a proxy
-that fetches data from the USGS feed, and an app to display the data are generated into a directory called "myproject".
- 
-Here is a second example:
-
-    emote create myproject --model model.json
-
-Where model.json contains:
-
-
-    {
-        "name":"transportation",
-        "types": {
-            "vehicle":{
-                "cost":"Integer",
-                "speed":"Integer",
-                "name":"String"
-                },
-            "route":{
-                "name":"String",
-                "limit":"Integer",
-                "surface":"String"
-            }
-        }
-    }
-
-
-This will use the "default" template to create a basic project with a model containing two CDM types: "vehicle" and "route".
-A skeleton of a proxy is generated that produced objects of those types filled with dummy values. No apps are generated.
 
 ## deploy
 
@@ -237,16 +202,6 @@ Undeploying a model, e.g.
   emote undeploy model
 
 Removes the CdmExternalSystem definitions for the tenant and all bindings to those external systems. It does not remove any CdmType's that were part of the model, but those types will no longer be bound to an external system.
-
-## add
-
-The add command is like the create command, but it just pulls the specified part of a given template and adds it to your project.
-
-Example:
-
-    emote add branding theme default
-
-This take the default "theme" from the "branding" template and adds it to your project.
 
 ## log
 
@@ -409,8 +364,7 @@ Starting with the lowest precedence, each source of credential described above o
 3. "profile.json" in project
 4. .emote_profile
 
-
-
+Individual values are overridden, so "username" may be taken from one profile, while "server" is defined in another. Properties in "externalCredentials" are merged by name.
 
 # Running standalone tests for a proxy
 
