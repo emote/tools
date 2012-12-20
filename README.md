@@ -17,10 +17,15 @@ IMPORTANT: before proceeding to install emote, run this simple test to verify yo
 This installs the "request" package, and it insures that npm is configured correctly. Don't skip this step
 unless you are already using node in your development system. [If the very first install using npm uses the '-g' option (see below) it triggers a bug in npm that will make later installs difficult.]
 
-emote is then installed using npm, the node package manager. Install with the '-g' option so emote will be available
-from the command line.
+emote is then installed using npm, the node package manager. If you install with the '-g' option, emote will be in your path and available from the command line.
+
+On a PC:
 
     $ npm install -g emote
+
+On a OS-X or Linux system:
+
+    $ sudo npm install -g emote
 
 ## Example project
 
@@ -44,33 +49,33 @@ structure until project.json is found.
 
 There are a number of sample applications available from the emotive mms. Use the "list" command to see their names:
 
-$ emote list samples
-emote 2.0.9
-Connecting to MMS as user mark@emotive.com at http://test.mms.emotive.com
-sample-usgs                    USGS Earthquake Package
-sample-whereami                Where Am I? Share your location
-...
-$ 
+    $ emote list samples
+    emote 2.0.9
+    Connecting to MMS as user mark@emotive.com at http://test.mms.emotive.com
+    sample-usgs                    USGS Earthquake Package
+    sample-whereami                Where Am I? Share your location
+    ...
+    $ 
 
 ### Downloading a sample application into your project
 
 Use the download command to bring a copy of a sample application into your project:
 
-$ emote download sample sample-usgs
-emote 2.0.9
-Connecting to MMS as user paul at http://localhost:8080/mms
-Finished downloading sample: sample-usgs
-$ ls */usgs
-app/usgs:
-icon114.png   icon48.png    icon72.png    source.js
-icon144.png   icon57.png    source.html   source.properties
+    $ emote download sample sample-usgs
+    emote 2.0.9
+    Connecting to MMS as user paul at http://localhost:8080/mms
+    Finished downloading sample: sample-usgs
+    $ ls */usgs
+    app/usgs:
+    icon114.png   icon48.png    icon72.png    source.js
+    icon144.png   icon57.png    source.html   source.properties
 
-model/usgs:
-model.json
+    model/usgs:
+    model.json
 
-proxy/usgs:
-README.md index.js  package.json
-$ 
+    proxy/usgs:
+    README.md index.js  package.json
+    $ 
 
 The download commands copies an app, model, and proxy for the USGS Earthquake Package into your project.
 
@@ -161,6 +166,10 @@ The Salesforce template for the model creates a "salesforce.json" file that cont
 
 
 # Commands
+
+## add
+
+    emote add proxy myprox1 --template Salesforce
 
 ## create
 
