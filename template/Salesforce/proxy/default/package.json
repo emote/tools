@@ -6,7 +6,7 @@
 	"homepage": "http://www.emotive.com",
 	"dependencies": {
 		"emsfdc": "~1.1.8",
-		"emproxy": "~1.0.8"
+		"emproxy": "~1.0.9"
 	},
 	"devDependencies": {},
 	"optionalDependencies": {},
