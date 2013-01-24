@@ -24,6 +24,6 @@ console.log("To enable bash command completion for emote, add the line:");
 console.log();
 console.log("    . " + dir + "/scripts/emote-completion");
 console.log();
-console.log("to your .profile");
+console.log("to your bash initialization file (.profile, .bash_profile, .bash_login, etc.)");
 console.log("------------------------------------------------------------------------------");
 console.log();

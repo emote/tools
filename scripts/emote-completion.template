@@ -13,11 +13,14 @@ function _emote()
         add)
             _emote_add
             ;;
+        build)
+            _emote_artifact
+            ;;
         create)
             _emote_create
             ;;
         deploy)
-            _emote_deploy
+            _emote_artifact
             ;;
         download)
             _emote_download
@@ -30,12 +33,13 @@ function _emote()
             ;;
         getWsdl)
             ;;
-        help)
+        list)
+            _emote_list
             ;;
         log)
             _emote_log
             ;;
-        templates)
+        status)
             ;;
         test)
             _emote_test
@@ -51,31 +55,26 @@ function _emote_top()
 {
     local cmds cur
     cur="${COMP_WORDS[1]}"
-    cmds=("add create deploy download exec generateFromWsdl getWsdl help log templates test undeploy")
+    cmds=("add build create deploy download exec generateFromWsdl getWsdl list log status test undeploy")
     COMPREPLY=($(compgen -W "${cmds}" -- ${cur}) )
 }
 
 function _emote_add()
 {
-    local word matches parent
-    parent=""
-    if [ $COMP_CWORD -eq 2 ]
+    local types parent word matches
+    if [    "${COMP_WORDS[${COMP_CWORD}-1]}" = "--template"  -o  "${COMP_WORDS[${COMP_CWORD}-1]}" = "--t" ]
     then
         parent=$EMOTE_HOME/template
-        word="${COMP_WORDS[2]}"
-    elif [ $COMP_CWORD -eq 3 ]
-    then
-        parent="$EMOTE_HOME/template/${COMP_WORDS[2]}"
-        word="${COMP_WORDS[3]}"
-    elif [ $COMP_CWORD -eq 4 ]
-    then
-        parent="$EMOTE_HOME/template/${COMP_WORDS[2]}/${COMP_WORDS[3]}"
-        word="${COMP_WORDS[4]}"
-    fi
-    if [ parent != "" ]
-    then
-        matches="$(_emote_subdirs $parent)"
+        word="${COMP_WORDS[${COMP_CWORD}]}"
+        matches="$(_emote_subdirs $parent skipHidden)"
         COMPREPLY=($(compgen -W "${matches}" -- ${word}) )
+        return;
+    fi
+    if [ $COMP_CWORD -eq 2 ]
+    then
+        types="all app model operation proxy test theme"
+        COMPREPLY=($(compgen -W  "${types}" -- ${COMP_WORDS[2]} ))
+        return;
     fi
 }
 
@@ -94,36 +93,12 @@ function _emote_create()
     fi
 }
 
-function _emote_deploy()
-{
-    local word matches parent projdir
-    projdir="$(_emote_find_project)"
-    parent=""
-    if [ "$projdir" != "" ]
-    then
-        if [ $COMP_CWORD -eq 2 ]
-        then
-            parent=$projdir
-            word="${COMP_WORDS[2]}"
-        elif [ $COMP_CWORD -eq 3 ]
-        then
-            parent="$projdir/${COMP_WORDS[2]}"
-            word="${COMP_WORDS[3]}"
-        fi
-    fi
-    if [ parent != "" ]
-    then
-        matches="$(_emote_subdirs $parent)"
-        COMPREPLY=($(compgen -W "${matches}" -- ${word}) )
-    fi
-}
-
 function _emote_download()
 {
     if [ $COMP_CWORD -eq 2 ]
     then
         word="${COMP_WORDS[2]}"
-        COMPREPLY=($(compgen -W "app" -- ${word}) )
+        COMPREPLY=($(compgen -W "app sample" -- ${word}) )
     fi
 }
 
@@ -144,6 +119,17 @@ function _emote_generateFromWsdl()
     then
         matches="$(_emote_subdirs $parent)"
         COMPREPLY=($(compgen -W "${matches}" -- ${word}) )
+    fi
+}
+
+function _emote_list()
+{
+    local types
+    if [ $COMP_CWORD -eq 2 ]
+    then
+        types="app externalSystem model proxy resource sample template"
+        COMPREPLY=($(compgen -W  "${types}" -- ${COMP_WORDS[2]} ))
+        return;
     fi
 }
 
@@ -198,14 +184,43 @@ function _emote_undeploy()
         COMPREPLY=($(compgen -W "${matches}" -- ${word}) )
     fi
 }
+
+#
+# commands of the form: command artifactType artifact
+function _emote_artifact()
+{
+    local word matches parent projdir
+    projdir="$(_emote_find_project)"
+    parent=""
+    if [ "$projdir" != "" ]
+    then
+        if [ $COMP_CWORD -eq 2 ]
+        then
+            parent=$projdir
+            word="${COMP_WORDS[2]}"
+        elif [ $COMP_CWORD -eq 3 ]
+        then
+            parent="$projdir/${COMP_WORDS[2]}"
+            word="${COMP_WORDS[3]}"
+        fi
+    fi
+    if [ parent != "" ]
+    then
+        matches="$(_emote_subdirs $parent)"
+        COMPREPLY=($(compgen -W "${matches}" -- ${word}) )
+    fi
+}
+
 #
 # arguments:
 # 1: the parent directory
+# 1: skip hidden directories if non-null
 #
 # returns the subdirectories that are not hidden
 function _emote_subdirs
 {
-    local children child fullpath matches
+    local children child fullpath matches skipHidden
+    skipHidden=$2
     matches=""
     if [ -d $1 ]
         then
@@ -213,9 +228,15 @@ function _emote_subdirs
         for child in $children
         do
             fullpath=$1/$child
-            if [ -d $fullpath -a ! -r $fullpath/.hidden ]
+            if [ -d $fullpath ]
             then
-               matches="$matches $child"
+                if [ -z "$skipHidden" ]
+                then
+                    matches="$matches $child"
+                elif [[ $child != _* ]] 
+                then
+                    matches="$matches $child"
+                fi
             fi
         done
     fi
@@ -225,7 +246,17 @@ function _emote_subdirs
 # apply default file completion
 function _emote_default()
 {
-    COMPREPLY=($(compgen -o default) )
+    local reply
+    reply=($(compgen -f ${COMP_WORDS[${COMP_CWORD}]} ) )
+    COMPREPLY=()
+    for word in ${reply[@]}
+    do
+        if [ -d "$word" ]
+        then
+            word=${word}/
+        fi
+        COMPREPLY=("${COMPREPLY[@]}" $word)
+    done
 }
 
 # return the current emote project directory
