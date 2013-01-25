@@ -6,7 +6,7 @@
     "homepage": "http://www.emotive.com",
     "dependencies": {
         "emproxy"   : "~1.0.8",
-        "emsoap"    : "~1.0.8",
+        "emsoap"    : "~1.0.9",
         "emutils"   : "~1.0.5",
         "emxml2js"  : "0.1.14"
     },
