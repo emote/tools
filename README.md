@@ -32,11 +32,10 @@ On a OS-X or Linux system:
 Here is an example of creating a project. The commands used are described in more detail below.
 
     $ emote create myproj
-    emote 2.0.9
     Created empty project myproj
-    $ cd myproj/
+    $ cd myproj
     $ ls
-    app   model   profile.json  project.json  proxy
+    app     model       project.json    proxy
     $ 
 
 emote creates a project directory that contain a project.json file and a subdirectory for app, model, and proxy code.
@@ -49,32 +48,49 @@ structure until project.json is found.
 
 There are a number of sample applications available from the emotive mms. Use the "list" command to see their names:
 
-    $ emote list samples
-    emote 2.0.9
-    Connecting to MMS as user mark@emotive.com at http://test.mms.emotive.com
-    sample-usgs                    USGS Earthquake Package
-    sample-whereami                Where Am I? Share your location
-    ...
+    $ emote list sample -g
+    Connecting to MMS as user mark@emotive.com at https://test.mms.emotive.com
+
+    targetType   name                     lastModifiedAt
+    -----------  -----------------------  --------------------  
+    CdmResource  sample-AppList           2013-01-30T20:43:35Z
+    CdmResource  sample-AppListjQueryUI   2013-01-30T20:43:35Z
+    CdmResource  sample-AppListNeutral    2013-01-30T20:43:35Z
+    CdmResource  sample-AppListTablet     2013-01-30T20:43:36Z
+    CdmResource  sample-BarCode           2013-01-30T20:43:36Z
+    CdmResource  sample-Camera            2013-01-30T20:43:36Z
+    CdmResource  sample-GoogleMaps        2013-01-30T20:43:36Z
+    CdmResource  sample-GPS               2013-01-30T20:43:36Z
+    CdmResource  sample-HelloWorld        2013-01-30T20:43:36Z
+    CdmResource  sample-Messaging         2013-01-30T20:43:36Z
+    CdmResource  sample-Pagination        2013-01-30T20:43:36Z
+    CdmResource  sample-PerfTest          2013-01-30T20:43:37Z
+    CdmResource  sample-SalesforceLeads   2013-01-30T20:43:37Z
+    CdmResource  sample-SignatureCapture  2013-01-30T20:43:37Z
+    CdmResource  sample-SplitView         2013-01-30T20:43:37Z
+    CdmResource  sample-USGS              2013-01-30T20:43:37Z
+    CdmResource  sample-Weblet            2013-01-30T20:43:37Z
+    CdmResource  sample-WhereAmI          2013-01-30T20:43:37Z
+    18 rows.
     $ 
 
 ### Downloading a sample application into your project
 
 Use the download command to bring a copy of a sample application into your project:
 
-    $ emote download sample sample-usgs
-    emote 2.0.9
-    Connecting to MMS as user paul at http://localhost:8080/mms
-    Finished downloading sample: sample-usgs
-    $ ls */usgs
-    app/usgs:
-    icon114.png   icon48.png    icon72.png    source.js
-    icon144.png   icon57.png    source.html   source.properties
+    $ emote download sample sample-USGS
+    Connecting to MMS as user mark@emotive.com at https://test.mms.emotive.com
+    Finished downloading sample: sample-USGS
+    $ ls */USGS
+    app/USGS:
+    icon114.png     icon48.png      icon72.png      source.js
+    icon144.png     icon57.png      source.html     source.properties
 
-    model/usgs:
+    model/USGS:
     model.json
 
-    proxy/usgs:
-    README.md index.js  package.json
+    proxy/USGS:
+    README.md   index.js    package.json
     $ 
 
 The download commands copies an app, model, and proxy for the USGS Earthquake Package into your project.
@@ -85,7 +101,7 @@ After creating your project, additional emote commands, like list, often require
 
     $ cat profile.json 
     {
-      "server": "<<Emotive server URL>>http://mms.emotive.com",
+      "server": "<<Emotive server URL>>https://dev.emotive.com",
       "username": "<<Emotive username>>",
       "password": "<<Emotive password>>"
     }$ 
@@ -94,7 +110,7 @@ The << >> notation indicate that the system should prompt. Any value after the <
 
     $ cat profile.json 
     {
-      "server": "http://test.mms.emotive.com",
+      "server": "https://dev.emotive.com",
       "username": "me@mydomain.net",
       "password": "<<Emotive password>>"
     }$ 
@@ -105,36 +121,39 @@ With this profile.json, it will only prompt for the password, which saves some t
 
 The deploy command uploads your app, model, and proxy code to MMS.
 
-    $ emote deploy --profile ~/test.json
-    emote 2.0.9
-    Connecting to MMS as user mark@emotive.com at http://test.mms.emotive.com
-    npm http GET https://registry.npmjs.org/request
+    $ emote deploy
+    Connecting to MMS as user mark@emotive.com at https://dev.emotive.com
     npm http GET https://registry.npmjs.org/emproxy
-    npm http 304 https://registry.npmjs.org/emproxy
-    npm http 304 https://registry.npmjs.org/request
+    npm http GET https://registry.npmjs.org/request
+    npm http 200 https://registry.npmjs.org/emproxy
+    npm http 200 https://registry.npmjs.org/request
     npm http GET https://registry.npmjs.org/emutils
     npm http GET https://registry.npmjs.org/portfinder/0.2.1
-    npm http 304 https://registry.npmjs.org/emutils
-    npm http 304 https://registry.npmjs.org/portfinder/0.2.1
+    npm http 200 https://registry.npmjs.org/portfinder/0.2.1
+    npm http GET https://registry.npmjs.org/portfinder/-/portfinder-0.2.1.tgz
+    npm http 200 https://registry.npmjs.org/emutils
+    npm http GET https://registry.npmjs.org/emutils/-/emutils-1.0.8.tgz
+    npm http 200 https://registry.npmjs.org/portfinder/-/portfinder-0.2.1.tgz
+    npm http 200 https://registry.npmjs.org/emutils/-/emutils-1.0.8.tgz
     npm http GET https://registry.npmjs.org/mkdirp
-    npm http 304 https://registry.npmjs.org/mkdirp
-    usgs@1.0.0 node_modules/usgs
+    npm http 200 https://registry.npmjs.org/mkdirp
+    USGS@1.0.0 node_modules/USGS
     ├── request@2.9.203
-    └── emproxy@1.0.8 (emutils@1.0.6, portfinder@0.2.1)
+    └── emproxy@1.0.9 (emutils@1.0.8, portfinder@0.2.1)
     Exec'ing query file: model.json
-    CREATED CdmExternalSystem: usgs
+    CREATED CdmExternalSystem: USGS
     Inserted CdmTypeBinding: Feature
     Completed binding of CDM type: Feature
     Finished executing directives.
-    Deployed model usgs
-    Uploading resource: usgs of length 120377
-    Deployed proxy usgs
-    Uploading app: usgs of length 64973
-    App usgs added
-    Deployed app usgs
+    Deployed model USGS
+    Uploading resource: USGS of length 122632
+    Deployed proxy USGS
+    Uploading app: USGS of length 65418
+    App USGS added
+    Deployed app USGS
     $ 
 
-Note from the example output that deploy has several intermediate steps. First it does a "build" to make sure that the proxies have been installed using npm. The npm install will cause any dependencies to be pull into the staging area. After that, it deploys the model, the proxy, and the app for the USGS sample by uploading them to http://test.mms.emotive.com.
+Note from the example output that deploy has several intermediate steps. First it does a "build" to make sure that the proxies have been installed using npm. The npm install will cause any dependencies to be pull into the staging area. After that, it deploys the model, the proxy, and the app for the USGS sample by uploading them to http://dev.emotive.com.
 
 After running emote deploy, you will be able to run the app and view the USGS earthquake data on your mobile device (i.e. iPhone, Android tablet, etc.)
 
@@ -143,12 +162,11 @@ After running emote deploy, you will be able to run the app and view the USGS ea
 The "add" command adds additional content to your project. "modules" are created under the app, model, and/or proxy directories. When a "template" is specified for the module being added, emote copies initial code into the module directory. For example, the following command adds a proxy to "myproj":
 
     $ emote add proxy myprox1 --template Salesforce
-    emote 2.0.9
     Adding proxy from template Salesforce
     $ ls proxy
     myprox1
-    $ ls proxy/myprox1/
-    README.md index.js  package.json
+    $ ls proxy/myprox1
+    README.md   index.js    package.json
     $ 
 
 In this example, a new proxy, "myprox1" has been added the used the Salesforce template. A proxy that allows easy integration of your app with Salesforce has been included. The Saleforce proxy is a Node.js module. The package.json file contains the parameters needed to deploy this proxy using npm.
@@ -156,16 +174,38 @@ In this example, a new proxy, "myprox1" has been added the used the Salesforce t
 In an emote project, modules work to provide the functionality needed by your emotive application. The module name for a proxy and for a model correspond to the "externalSystem" name of your emotive application. In the next example, we add a "model" module to work with our proxy:
 
     $ emote add model myprox1 --template Salesforce
-    emote 2.0.9
     Adding model from template Salesforce
+    $ ls model/
+    myprox1
     $ ls model/myprox1/
     salesforce.json
     $ 
 
 The Salesforce template for the model creates a "salesforce.json" file that contains metadata that specifies what Salesforce object you would like to integrate into your appication, and how they correspond with the emotive CDM (common data model.)
 
-
 # Commands
+
+## emote default action
+
+With no parameters or options, emote provide basic information on the context in which it is running. E.g.
+
+    $ emote
+    version   2.1.14
+    profile   profile.json
+    username  mark@emotive.com on https://dev.emotive.com
+    project   myproj
+    $ 
+
+The following options can only be used when emote is passed no other parameters:
+
+* --help : show a summary of the available commands and options
+* --info : default, the same as 'emote' with no options, as above.
+* --readme : outputs this README.md file to the console
+* --emoteDir : prints the directory in which the emote source code is deployed
+* --version : prints the version on emote
+* --whoami : prints the current username for emote
+* --doc : prints the URL to doc.emotive.com
+
 
 ## add
 
@@ -213,7 +253,7 @@ For samples, the command is:
 
 Where the sample name can be obtained by using:
 
-    emote list samples
+    emote list sample -g
 
 
 ## deploy
@@ -256,6 +296,33 @@ Removes the CdmExternalSystem definitions for the tenant and all bindings to tho
     emote undeploy theme {theme name}
 
 This will undeploy the theme with the supplied name (defaults to "default" if themeName is omitted).
+
+## list
+
+    emote list {artifact type} {artifact name} [-g]
+
+The -g option indicates that "global" objects, that were created by the system, not the current tenant, should also be listed.
+
+{artifact type} is one of:
+
+* app :  list deployed applications, 
+* model : list defined CdmType's 
+* proxy : list the resource for a deployed proxy
+* sample : list the resource for deployed sample projects
+* resource : list all resources
+* template : list template available in emote (see 'add' command)
+* externalSystem : list CdmExternalSystem objects
+
+{artifact name} can be wildcarded using leading, trailing, or embedded '*' characters. When wildcards are used, the artifact name should be quoted. E.g.
+
+    emote list app 'A*'
+
+Will list all the apps where the name starts with 'A'.
+
+    emote list resource '*cdf*' -g
+
+Lists all the resources that contain 'cdf' in their name. Global resources included. 
+ 
 
 ## log
 
