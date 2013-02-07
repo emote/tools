@@ -1,0 +1,121 @@
+[
+  {
+    "op": "INVOKE",
+    "targetType": "CdmType",
+    "name": "deleteCdmOperations",
+    "params": {
+      "typeName": "DynamicType",
+      "storage": "virtual",
+      "extensionAllowed": true,
+      "externallySourced": true,
+      "propertySet": [],
+      "replace": true
+    }
+  },
+  {
+    "op": "INVOKE",
+    "targetType": "CdmType",
+    "name": "alterCdmType",
+    "params": {
+      "typeName": "DynamicType",
+      "storage": "virtual",
+      "extensionAllowed": true,
+      "externallySourced": true,
+      "propertySet": [],
+      "replace": true
+      }
+  },
+  {
+    "op": "INVOKE",
+    "targetType": "CdmType",
+    "name": "createCdmOperation",
+    "params": {
+      "name": "concatNames",
+      "dynamicClass" : true,
+      "targetType": "DynamicType",
+      "returnType": "String",
+      "parameters": [
+        {
+          "name": "p1",
+          "typeName": "String",
+          "targetType": "CdmParameter",
+          "cardinality": "one"
+        },
+        {
+          "name": "p2",
+          "typeName": "Real",
+          "targetType": "CdmParameter",
+          "cardinality": "one"
+        },
+        {
+          "name": "p3",
+          "typeName": "Boolean",
+          "targetType": "CdmParameter",
+          "cardinality": "one"
+        }
+      ]
+    }
+  },
+  {
+    "op": "INVOKE",
+    "targetType": "CdmType",
+    "name": "createCdmOperation",
+    "params": {
+      "name": "concatValues",
+      "dynamicClass" : true,
+      "targetType": "DynamicType",
+      "returnType": "String",
+      "parameters": [
+        {
+          "name": "p1",
+          "typeName": "String",
+          "targetType": "CdmParameter",
+          "cardinality": "one"
+        },
+        {
+          "name": "p2",
+          "typeName": "Real",
+          "targetType": "CdmParameter",
+          "cardinality": "one"
+        },
+        {
+          "name": "p3",
+          "typeName": "Boolean",
+          "targetType": "CdmParameter",
+          "cardinality": "one"
+        }
+      ]
+    }
+  },
+  {
+    "op": "INVOKE",
+    "targetType": "CdmType",
+    "name": "createCdmOperation",
+    "params": {
+      "name": "concatAll",
+      "dynamicClass" : true,
+      "targetType": "DynamicType",
+      "returnType": "String",
+      "parameters": [
+        {
+          "name": "p1",
+          "typeName": "String",
+          "targetType": "CdmParameter",
+          "cardinality": "one"
+        },
+        {
+          "name": "p2",
+          "typeName": "Real",
+          "targetType": "CdmParameter",
+          "cardinality": "one"
+        },
+        {
+          "name": "p3",
+          "typeName": "Boolean",
+          "targetType": "CdmParameter",
+          "cardinality": "one"
+        }
+      ]
+    }
+  }
+]
