@@ -17,6 +17,15 @@ testsdir="$EMOTE_TESTS"
 . $testsdir/bin/functions.sh
 
 echo "starting test"
+
+emote create dyncode
+cd dyncode
+emote add all dynamic --template _dynamicCode
+emote build
+emote deploy --profile ../profile.json
+emote test --profile ../profile.json
+cd ..
+
 jettypid=$(runJetty)
 emote create weather
 cd weather
