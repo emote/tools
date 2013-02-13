@@ -185,13 +185,42 @@ The Salesforce template for the model creates a "salesforce.json" file that cont
 
 # Commands
 
-## emote default action
+## Common Parameters
+
+## module types
+
+Several commands include a module type (or group of module types) as
+one of their parameters.  Module types include:
+
+* app
+* model
+* operation 
+* proxy 
+* test
+* theme
+
+A module type is a directory that is a child of the Emote project directory.
+
+A module type parameter can be:
+
+1. A single type e.g. __app__ or __model__
+2. A group of module types joined by __+__, e.g. __app+theme__ or
+__proxy+test+operation__
+3. __all__, meaning all module types
+
+## module names
+
+A module name is the name of a directory that is a child of a module type directory. For models and proxies, this will be the same as the "externalSystem" name in the CDM.
+
+## Commands
+
+### emote default action
 
 With no parameters or options, emote provide basic information on the context in which it is running. E.g.
 
     $ emote
-    version   2.1.14
-    profile   profile.json
+    version   2.2.0
+    profile   /Users/mark/profile.json
     username  mark@emotive.com on https://dev.emotive.com
     project   myproj
     $ 
@@ -206,65 +235,61 @@ The following options can only be used when emote is passed no other parameters:
 * --whoami : prints the current username for emote
 * --doc : prints the URL to doc.emotive.com
 
+### add
 
-## add
+`emote add [`_moduleType_ `[`_moduleName_`]] [--template` _templateName_]
 
-    emote add {module type} {module name} --template {template name}
+_moduleType_ is a standard module type parameter (see above). 
 
-{module type} must be one of: model proxy app operation test theme, 
+_moduleName_ is a standard module name parameter.
 
-Or any combination joined by + (e.g. model+proxy). 'all' is equivalent to the whole list joined by +.
+__--template__ is optional. If it is included, the specifid parts from the named template (e.g. Salesforce) will be included in the project using the specified module name (which defaults to __default__).
 
-{module name} the name of the module, will be the directory name under the {module type} directory. For models and proxies, this will be the same as the "externalSystem" name in the CDM.
+If __--template__ is omitted, _moduleType_ and _moduleName_ are required, and an empty directory _ProjectRoot/moduleType/moduleName_ is created.
 
---template is optional. If it is included, content from the named template (e.g. Salesforce) will be included in the module.
+### create
 
-## create
+`emote create` _projectName_
 
-    emote create {project name}
-
-Create a new Emotive project in the current directory. {project name} is the name is the directory created. Subdirectories: model, app, proxy are created. 
-
-project.json is created.
+Create a new Emotive project in the current directory. _projectName_ is the name of the directory created. Subdirectories __model__, __app__, __proxy__ are created. 
 
 profile.json is created with default values that cause emote to prompt for credentials. (See profile.json above.)
 
-## download
+### download
 
-    emote download {app or sample} {identifier}
+`emote download` (app | sample) _identifier_
 
 This command will download a previously deployed artifact from the MMS cloud service and save as files in your project
-directory. Currently thus is only implemented for apps and samples. 
+directory. Currently, this is only implemented for apps and samples. 
 
 For apps, the command is:
 
-    emote download app {app id}
+`emote download app` _appId_
 
 Example:
 
     emote download app usgs
 
-Will download the app with ID "usgs" from you tentant and add it to your current project. Note that your current project
-is based on your current directory.
+will download the app with ID "usgs" from your tentant and add it to your current project. Note that your current project is found using on your current directory.
 
 For samples, the command is:
 
-    emote download sample {sample name}
+`emote download sample` _sampleName_
 
-Where the sample name can be obtained by using:
+Where the list of sample names can be obtained by using:
 
     emote list sample -g
 
 
-## deploy
+### deploy
 
-    emote deploy {module type} {module name}
+`emote deploy [`_moduleType_ `[` _moduleName_ `]]`
 
-The "deploy" command works within any subdirectory of a project. With no parameters, "deploy" will deploy the model.
+_moduleType_ is a standard module type parameter.
 
-{module type} is optional. It limits the deploy to just that directory.
+_moduleName_ is a standard module name parameter.
 
-{module name} is optional, but can only be included if preceded by {module type}. It limits the deploy to just that module.
+The __deploy__ command works within any subdirectory of a project. With no parameters, __deploy__ will deploy the entire project.  If parmeters are present, they specify which parts of the project to deploy.
 
 Example:
 
@@ -275,15 +300,19 @@ Will deploy the "usgs" proxy that was generated into your project.
 Note that until a project has been deployed, the MMS cloud service (at mms.emotive.com) has no knowledge of the project.
 By deploying the generated project, the app is made available to users.
 
-## undeploy
+### undeploy
 
-    emote undeploy {module type} {identifier}
+`emote deploy [`_moduleType_ `[` _moduleName_ `]]`
+
+_moduleType_ is a standard module type parameter.
+
+_moduleName_ is a standard module name parameter.
 
 This removes objects that have been deployed. E.g.
 
-    emote undeploy app {app id}
+    emote undeploy app usgs
 
-Removes the app identified by {app id}.
+Removes the app named __usgs__.
 
 Undeploy is currently implemented only for app, model, and theme.
 
@@ -291,19 +320,27 @@ Undeploying a model, e.g.
 
     emote undeploy model
 
-Removes the CdmExternalSystem definitions for the tenant and all bindings to those external systems. It does not remove any CdmType's that were part of the model, but those types will no longer be bound to an external system.
+removes the CdmExternalSystem definitions for the tenant and all bindings to those external systems. It does not remove any CdmType's that were part of the model, but those types will no longer be bound to an external system.
 
-    emote undeploy theme {theme name}
+    emote undeploy theme custom
 
-This will undeploy the theme with the supplied name (defaults to "default" if themeName is omitted).
+This will undeploy the theme named __custom__ (the theme name defaults to "default" if none is specified).
 
-## list
+### build ###
 
-    emote list {artifact type} {artifact name} [-g]
+`emote build  [`_moduleType_ `[` _moduleName_ `]]`
 
-The -g option indicates that "global" objects, that were created by the system, not the current tenant, should also be listed.
+This does whatever is necessary to build the project before deploying it.  By default, it builds the entire project.  If _moduleType_ and/or  _moduleName_ are specified, only that part of the project is built.
 
-{artifact type} is one of:
+It is not necessary to buiuld a project before deploying it; the __deploy__ comand builds the project automatically.
+
+### list
+
+`emote list` _artifactType_ _artifactName_ `[-g]`
+
+The __-g__ option indicates that "global" objects, those that were created by the system rahter than the current tenant, should also be listed.
+
+_artifactType_ is one of:
 
 * app :  list deployed applications, 
 * model : list defined CdmType's 
@@ -313,7 +350,7 @@ The -g option indicates that "global" objects, that were created by the system, 
 * template : list template available in emote (see 'add' command)
 * externalSystem : list CdmExternalSystem objects
 
-{artifact name} can be wildcarded using leading, trailing, or embedded '*' characters. When wildcards are used, the artifact name should be quoted. E.g.
+_artifactName_ can be wildcarded using leading, trailing, or embedded '*' characters. When wildcards are used, the artifact name should be quoted. E.g.
 
     emote list app 'A*'
 
@@ -324,12 +361,11 @@ Will list all the apps where the name starts with 'A'.
 Lists all the resources that contain 'cdf' in their name. Global resources included. 
  
 
-## log
+### log
 
-    emote log {start time} {end time} [--tail] [--local] [--csv]
+`emote log` _startTime_ _endTime_ `[--tail] [--local] [--csv]`
 
-This displays the log file for your proxy running on the MMS server. The "start time" indicates the stamp of the
-earliest message to show. It can be specified in several formats.
+This displays the log file for your proxy running on the MMS server. __startTime__ indicates the stamp of the earliest message to show. It can be specified in several formats.
 
 * GMT specified as ISO 8601: `2012-09-13T17:30:00`
 * Local time specified as ISO 8601 and including the offset to the timezone: `2012-09-13T10:30:00-07:00`
@@ -337,16 +373,15 @@ earliest message to show. It can be specified in several formats.
 * Relative time (as in, "starting 5 minutes ago"): `5m`
 * Relative time (as in, "starting 2 hours ago"): `2h`
 
-If you specify just the "start time" you will get all the log entries that have been recorded since that time until the
-current moment. If you specify an "end time" as well, you will only see those records between "start" and "end".
+If you specify just __startTime__ you will get all the log entries that have been recorded since that time until the current moment. If you specify __endTime__ as well, you will only see those records between __startTime__ and __endTime__.
 
-You can add the "--tail" option which will show all the records from the "start time" to the present, and then
-periodically append new log records as they arrive. (If you specify "--tail" with no "start time" it will assume you wanted "5m".)
+You can add the __--tail__ option which will show all the records from the__startTime__ to the present, and then
+periodically append new log records as they arrive. (If you specify __--tail__ with no __startTime__ it will assume you wanted a __startTime__ of __5m__.)
 
-The output is normally shown with GMT timestamps, but if you add the "--local" option the timestamps will be converted
+The output is normally shown with GMT timestamps, but if you add the __--local__ option the timestamps will be converted
 to your local time zone (and the times will have an "L" appended to remind you it's not GMT).
 
-The output is normally designed to be human-readable, but you can specify the "--csv" option and the output will be
+The output is normally designed to be human-readable, but you can specify the __--csv__ option and the output will be
 written in CSV format so it could be fed into another program.
 
 Some common examples:
@@ -364,12 +399,12 @@ Show the log data for a certain date from 9 to 10 am in the local time zone, out
     emote log "2012-09-13 09:00:00" "2012-09-13 10:00:00" --csv
 
 
-## exec
+### exec
 
-    emote exec {command file .json}
+`emote exec` _commandFile_`.json`
 
 This takes a parameter which is the name of a file containing JSON for an Array of MMS REST requests. It submits the
-requests to MMS synchronously, as a series, and logs the REST responses to stdout.
+requests to MMS as a synchronously run series of commands, and logs the REST responses to stdout.
 
 Example:
 
@@ -381,12 +416,15 @@ Where myfile.json contains:
 
 Will select a list of the External Systems for your tenant which are registered with MMS and print it to stdout.
 
-## getWsdl
+### getWsdl
 
-emote getWsdl subproject wsdlUrl service port [username password]
+`emote getWsdl` _moduleName_ _wsdlUrl_ _service_ _port_ [_username_ _password_]
 
-Specify service and port by their simple (unqualified) names. username and password are the credentials (if any)
-needed to read the WSDL.  subproject is the name of the subproject you wish to create.
+This creates several files in several different module types, all in the module _moduleName_.
+
+_moduleName_ is a standard module name.
+
+_wsdlUrl_, _service_, _port_, specifies a WSDL port which the module will comminicate with.  The service and port are specified by their unqualified names. 
 
 This is the first step in creating a SOAP-service-based subproject.  It will fetch the WSDL for a web service and create three
 files in your project's <subproject>/model directory:
@@ -408,22 +446,31 @@ so the default behavior applies.)
 
 After editing these two files, use the generateFromWsdl command to generate your subproject.
 
-## generateFromWsdl
+### generateFromWsdl
 
-emote generateFromWsdl subproject
+`emote generateFromWsdl` _moduleName_
 
-This will generate a SOAP-service-based subproject.  Before running this, you must use the getWsdl command to load WSDL-based
-definitions into your subproject.
+This will generate a SOAP-service-based subproject.  Before running this, you must use the getWsdl command to load WSDL-based definitions into your module.
 
+### status
 
+`emote status`
+
+Check the availability of the Emote server.
+
+### test
+
+`emote test` [_moduleName_]
+
+Run the Javascript tests in the test directory of the current project.  If _moduleName_ is specified, run only the test in that subdirectory.
 
 # Credentials
 
 Here are the methods of supplying MMS credential to emote.
 
-## .emote_profile
+## .emote\_profile
 
-MMS credentials can be using a ".emote_profile" file, which can be located in the user directory. This is a JSON file. Example:
+MMS credentials can be using a ".emote\_profile" file, which can be located in the user directory. This is a JSON file. Example:
 
     {
         "username":"myuser",
@@ -434,13 +481,13 @@ MMS credentials can be using a ".emote_profile" file, which can be located in th
 ## profile.json in project
 
 If the file "profile.json" is present in the root of a project, it is used for commands within that project. It has
-the same format as .emote_profile
+the same format as .emote\_profile
 
 ## Profile file supplied on command line
 
 The profile file name can also be included as a command line argument:
 
-    emote --profile alt_profile.json <command> ...
+    emote --profile alt\_profile.json <command> ...
 
 ## Credentials on command line
 
@@ -457,6 +504,6 @@ Starting with the lowest precedence, each source of credential described above o
 1. Username and password as command line parameters
 2. Profile file on command line
 3. "profile.json" in project
-4. .emote_profile
+4. .emote\_profile
 
 Individual values are overridden, so "username" may be taken from one profile, while "server" is defined in another. Properties in "externalCredentials" are merged by name.
