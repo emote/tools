@@ -31,7 +31,7 @@
     "name": "createCdmOperation",
     "params": {
       "name": "concatNames",
-      "dynamicClass" : true,
+      "scriptType" : "java".
       "targetType": "DynamicType",
       "returnType": "String",
       "parameters": [
@@ -62,7 +62,7 @@
     "name": "createCdmOperation",
     "params": {
       "name": "concatValues",
-      "dynamicClass" : true,
+      "scriptType" : "java".
       "targetType": "DynamicType",
       "returnType": "String",
       "parameters": [
@@ -93,7 +93,7 @@
     "name": "createCdmOperation",
     "params": {
       "name": "concatAll",
-      "dynamicClass" : true,
+      "scriptType" : "java".
       "targetType": "DynamicType",
       "returnType": "String",
       "parameters": [
