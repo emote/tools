@@ -1,0 +1,36 @@
+{
+    "_verbose_logging_": false,
+    "Contact":    {
+        "target":    "Contact",
+        "cacheMode":"global",
+        "properties":{
+            "OwnerId":          true,
+            "AccountId":        true,
+            "Email":            true,
+            "Fax":              true,
+            "FirstName":        true,
+            "Name":        true,
+            "LastName":         true,
+            "HomePhone":        true,
+            "MobilePhone":      true,
+            "MailingStreet":    true,
+            "MailingCity":      true,
+            "MailingState":     true,
+            "MailingCountry":   true,
+            "MailingPostalCode":true,
+            "Phone":            true,
+            "IsDeleted":        true,
+            "AssistantName":	{"type":"Media"},
+            "Birthdate":		true
+        }
+    },
+	"Document": {
+		"target": "Document",
+        "cacheMode":"global",
+		"properties": {
+			"Name": true,
+			"Body": true,
+			"ContentType": true
+		}
+	}
+}
