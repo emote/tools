@@ -36,8 +36,8 @@ function processDirective(restRequest,callback) {
                     [
                         {
                             targetType:'CdmError',
-                            errorCode: 'integration.login.fail',
-                            errorMessage: 'The supplied credentials are invalid.'
+                            code: 'integration.login.fail',
+                            message: 'The supplied credentials are invalid.'
                         }
                     ]
             };
@@ -94,7 +94,7 @@ function processDirective(restRequest,callback) {
         }
         callback(err,restResponse);
     });
-    
+
 }
 
 function convertGeoJSON(input) {

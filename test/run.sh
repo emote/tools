@@ -55,5 +55,15 @@ emote add all sfdc --template _sftest
 emote build
 emote deploy --profile ../profile.json
 emote test --profile ../profile.json
+emote undeploy model --profile ../profile.json
+cd ..
+
+emote create sfproj_global
+cd sfproj_global
+emote add all sfdc --template _sftest_global
+emote build
+emote deploy --profile ../profile.json
+emote test --profile ../profile.json
+emote undeploy model --profile ../profile.json
 cd ..
 
