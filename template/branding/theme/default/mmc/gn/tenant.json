@@ -1,8 +1,9 @@
 {
     "textColor":"#000000",
-    "headerColorGradientStart":"#1074B4",
-    "headerTextColor":"#FFFFFF",
-    "backgroundColorGradientStart":"#FFFFFF",
-    "insetListTextColor":"#1074B4"
+    "headerColorGradientStart":"#f9cf91", 
+    "headerColorGradientEnd":"#FBB040", 
+    "headerTextColor":"#000000",
+    "backgroundColorGradientStart":"#D9D9D9",
+    "backgroundColorGradientEnd":"#7a7a7a", 
+    "insetListTextColor":"#FBB040"
 }
-
