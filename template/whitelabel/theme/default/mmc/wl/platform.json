@@ -7,5 +7,6 @@
     "profileImageDescription":"You may select an image for this profile",
     "profileImagePlaceholderText":"Profile Image",
     "profileEnvironmentDescription":"Specify the emotive environment to connect to",
+    "profileEnvironmentCustomUrlPlaceholderText":"https://subdomain.emotive.com",
     "platformBranding":"Powered by emotive"
 }
