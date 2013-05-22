@@ -95,6 +95,14 @@ Use the download command to bring a copy of a sample application into your proje
 
 The download commands copies an app, model, and proxy for the USGS Earthquake Package into your project.
 
+The download command can also be used to create sample instances of CDM types into your project.  For instance, after downloading and deploying the sample-USGS application, which defines a type called Feature,
+
+    $ emote download type Feature
+    Connecting to MMS as user mark@emotive.com at https://test.mms.emotive.com
+    Finished downloading type Feature
+
+will write a sample instance of the type Feature to the file types/Feature.json .
+
 ### Credentials and the profile.json file
 
 After creating your project, additional emote commands, like list, often require communicating with the Emotive cloud service (MMS). This requires credentials, including the username and password you were provided when signing up to use the Emotive cloud service. The default profile.json created in your project causes emote to prompt for server, username, and password:
