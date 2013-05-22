@@ -1,16 +1,16 @@
 {
-	"author": "Emotive",
-	"name": "Salesforce",
-	"description": "Emotive proxy code for accessing Salesforce",
-	"version": "2.1.1",
-	"homepage": "http://www.emotive.com",
-	"dependencies": {
-		"emsfdc": "2.1.1",
-		"emproxy": "1.0.13"
-	},
-	"devDependencies": {},
-	"optionalDependencies": {},
-	"engines": {
-		"node": ">=0.8.3"
-	}
+    "author": "Emotive",
+    "name": "Salesforce",
+    "description": "Emotive proxy code for accessing Salesforce",
+    "version": "2.1.2",
+    "homepage": "http://www.emotive.com",
+    "dependencies": {
+        "emsfdc": "2.1.2",
+        "emproxy": "1.0.14"
+    },
+    "devDependencies": {},
+    "optionalDependencies": {},
+    "engines": {
+        "node": ">=0.8.3"
+    }
 }
