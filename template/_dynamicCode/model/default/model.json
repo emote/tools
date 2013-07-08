@@ -23,7 +23,17 @@
       "externallySourced": true,
       "propertySet": [],
       "replace": true
-      }
+    }
+  },
+  {
+    "op": "INVOKE",
+    "name": "bindCdmType",
+    "params": {
+      "externalSystem": "dynamic",
+      "typeName": "DynamicType",
+      "externalType" : "DynamicType"
+    },
+    "targetType": "CdmType"
   },
   {
     "op": "INVOKE",
@@ -31,7 +41,7 @@
     "name": "createCdmOperation",
     "params": {
       "name": "concatNames",
-      "scriptType" : "java".
+      "scriptType" : "java",
       "targetType": "DynamicType",
       "returnType": "String",
       "parameters": [
@@ -62,7 +72,7 @@
     "name": "createCdmOperation",
     "params": {
       "name": "concatValues",
-      "scriptType" : "java".
+      "scriptType" : "java",
       "targetType": "DynamicType",
       "returnType": "String",
       "parameters": [
@@ -93,7 +103,7 @@
     "name": "createCdmOperation",
     "params": {
       "name": "concatAll",
-      "scriptType" : "java".
+      "scriptType" : "java",
       "targetType": "DynamicType",
       "returnType": "String",
       "parameters": [

@@ -1,5 +1,3 @@
-echo $# args were $*
-
 testName=$1
 
 if [ -z "$EMOTE_TESTS" ]
@@ -17,10 +15,10 @@ then
 fi
 
 testsdir="$EMOTE_TESTS"
-                                    p
+
 . $testsdir/bin/functions.sh
 
-echo "starting test"
+echo "starting test $testName"
 
 if [ "$testName" == "" -o "$testName" == "dynamic"  ]
 then
@@ -62,7 +60,8 @@ then
     cd ..
 fi
 
-if [ "$testName" == "" -o "$testName" == "sf"  ]
+# disable this for now
+if [ "$testName" == "sf"  ]
 then
     emote create sfproj
     cd sfproj
@@ -81,5 +80,5 @@ then
     emote test --profile ../profile.json
     emote undeploy model --profile ../profile.json
     cd ..
-    fi
+fi
 
