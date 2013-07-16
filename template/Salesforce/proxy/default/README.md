@@ -1,1 +1,0 @@
-Integration proxy for Salesforce
