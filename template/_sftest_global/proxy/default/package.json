@@ -2,10 +2,10 @@
     "author": "Emotive",
     "name": "Salesforce",
     "description": "Emotive proxy code for accessing Salesforce",
-    "version": "2.1.7",
+    "version": "2.1.8",
     "homepage": "http://www.emotive.com",
     "dependencies": {
-        "emsfdc": "2.1.9",
+        "emsfdc": "2.1.10",
         "emproxy": "1.0.14"
     },
     "devDependencies": {},
