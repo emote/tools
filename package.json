@@ -2,7 +2,7 @@
     "author": "Mark Wallace <mark@emotive.com>",
     "name": "emote",
     "description": "Emotive command line tool",
-    "version": "3.1.15",
+    "version": "3.1.16",
     "homepage": "http://www.emotive.com",
     "preferGlobal": "true",
     "bin": {
@@ -19,7 +19,7 @@
         "adm-zip": "0.1.9",
         "async": "0.1.x",
         "crc32": "0.2.x",
-        "emsfdc": "2.1.11",
+        "emsfdc": "2.1.12",
         "emsoap": "1.0.12",
         "emutils": "1.0.11",
         "npm": "1.3.5",
