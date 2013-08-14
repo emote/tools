@@ -2,7 +2,7 @@
     "author": "Mark Wallace <mark@emotive.com>",
     "name": "emote",
     "description": "Emotive command line tool",
-    "version": "3.1.24",
+    "version": "3.1.25",
     "homepage": "http://www.emotive.com",
     "preferGlobal": "true",
     "bin": {
